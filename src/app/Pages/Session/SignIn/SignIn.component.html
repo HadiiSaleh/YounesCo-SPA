@@ -8,10 +8,30 @@
             </div>
           </div>
           <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
-              <mat-card class="sign-in-form form-margin">
-                  <h4>User Sign In</h4>
-                  <embryo-SignIn></embryo-SignIn>
-                </mat-card>
+            <mat-card class="sign-in-form form-margin">
+              <h3 class="accent-color">User Sign In</h3>
+              <form [formGroup]="insertForm" (ngSubmit)="onSubmit()">
+                <div class="mb-4">
+                  <mat-form-field class="w-100">
+                    <input formControlName="Username" matInput type="text" placeholder="Username" required>
+                  </mat-form-field>
+                </div>
+                <div class="mb-4">
+                  <mat-form-field class="w-100">
+                    <input formControlName="Password" matInput type="password" placeholder="Password" required>
+                  </mat-form-field>
+                </div>
+                <div class="mb-3">
+                  <mat-checkbox formControlName="RememberMe">Remember my username</mat-checkbox>
+                  <span fxFlex></span> <a class="accent-color" [routerLink]="['/session/forgot-password']">Forgot
+                    Password?</a>
+                </div>
+                <button color="accent" class="button-lg mb-3" mat-raised-button type="submit" value="Submit"
+                  [disabled]="insertForm.invalid">Sign In</button>
+                <p>Don't have an account? <a class="accent-color" [routerLink]="['/session/signup']">Click here to
+                    create one</a></p>
+              </form>
+            </mat-card>
           </div>
         </div>
       </div>

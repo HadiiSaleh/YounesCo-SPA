@@ -73,6 +73,7 @@ import { CTASingleBannerComponent } from './CallToAction/CTA-SingleBanner/CTA-Si
 import { DownloadAppSectionComponent } from './DownloadAppSection/DownloadAppSection.component';
 import { HomePageThreeSliderComponent } from './Slider/HomePageThreeSlider/HomePageThreeSlider.component';
 import { NewProductsCardComponent } from './NewProductsCard/NewProductsCard.component';
+import { OkPopupComponent } from './ok-popup/ok-popup.component';
 
 
 @NgModule({
@@ -154,7 +155,8 @@ import { NewProductsCardComponent } from './NewProductsCard/NewProductsCard.comp
       CTASingleBannerComponent,
       DownloadAppSectionComponent,
       HomePageThreeSliderComponent,
-      NewProductsCardComponent
+      NewProductsCardComponent,
+      OkPopupComponent
    ],
    exports: [
       BrandslogoComponent,
@@ -198,7 +200,8 @@ import { NewProductsCardComponent } from './NewProductsCard/NewProductsCard.comp
    ],
    entryComponents : [
       ReviewPopupComponent,
-      ConfirmationPopupComponent
+      ConfirmationPopupComponent,
+      OkPopupComponent
    ]
 })
 export class GlobalModule {}

@@ -12,7 +12,7 @@ export interface Menu {
 }
 
 const HeaderOneItems= [
-  {
+  /*{
     state: "home",
     name: "HOME",
     type: "sub",
@@ -76,7 +76,7 @@ const HeaderOneItems= [
     name:"ACCESSORIES",
     type:"link",
     icon: 'party_mode'
-  },
+  },*/
   {
     state:'products',
     name:"CATEGORIES",
@@ -249,7 +249,7 @@ const HeaderOneItems= [
         name: 'FAQ',
         type: 'link',
         icon: 'arrow_right_alt',
-      },
+      }/*,
       {  
         state: 'not-found', 
         name: '404 PAGE',
@@ -293,7 +293,7 @@ const HeaderOneItems= [
                 icon: 'arrow_right_alt',
             }
           ]
-       }
+       }*/
     ],
 },
   {

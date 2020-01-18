@@ -4,7 +4,7 @@
 <!-- dash-title -->
 <mat-card class="m-3">
    <div fxLayout="row wrap">
-      <div fxFlex.gt-md="600px" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+      <div fxFlex.gt-md="100" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
          <mat-form-field class="w-100">
             <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
          </mat-form-field>
@@ -23,7 +23,8 @@
                </ng-container>
                <ng-container matColumnDef="invoiceId">
                   <th class="px-3 text-nowrap" mat-header-cell *matHeaderCellDef> Invoice Id </th>
-                  <td class="px-3 text-nowrap" mat-cell *matCellDef="let element"> <a href="javascript:void(0)" (click) ="onSeeDialog()"> {{element.invoiceId}}</a> </td>
+                  <td class="px-3 text-nowrap" mat-cell *matCellDef="let element"> <a href="javascript:void(0)"
+                        (click)="onSeeDialog()"> {{element.invoiceId}}</a> </td>
                </ng-container>
                <ng-container matColumnDef="name">
                   <th class="px-3 text-nowrap" mat-header-cell *matHeaderCellDef> Buyer </th>
@@ -44,22 +45,22 @@
                <ng-container matColumnDef="status">
                   <th class="px-3 text-nowrap" mat-header-cell *matHeaderCellDef> Status </th>
                   <td class="px-3 text-nowrap" mat-cell *matCellDef="let element"> {{element.status}} </td>
-               </ng-container> 
+               </ng-container>
                <ng-container matColumnDef="action">
                   <th class="px-3 text-nowrap" mat-header-cell *matHeaderCellDef> Action </th>
                   <td class="px-3 text-nowrap" mat-cell *matCellDef="let element;let i = index;">
-                  <button mat-icon-button (click) ="onSeeDialog()" color="primary">
-                     <i class="material-icons">remove_red_eye</i>
-                  </button> 
-                  <button color="warn" mat-icon-button (click)="onDelete(i)">
-                     <mat-icon class="">delete</mat-icon>
-                  </button>
+                     <button mat-icon-button (click)="onSeeDialog()" color="primary">
+                        <i class="material-icons">remove_red_eye</i>
+                     </button>
+                     <button color="warn" mat-icon-button (click)="onDelete(i)">
+                        <mat-icon class="">delete</mat-icon>
+                     </button>
                   </td>
                </ng-container>
                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             </table>
-         </div>  
+         </div>
          <mat-paginator [pageSizeOptions]="[15, 30, 45, 60]"></mat-paginator>
          <!-- table-responsive -->
       </mat-card>

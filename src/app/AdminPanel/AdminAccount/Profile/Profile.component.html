@@ -1,34 +1,47 @@
 <mat-card>
-   <h4>Profile Information</h4>
-   <div class="pt-3">
-      <div class="proflie-field mb-3">
-         <label>First Name:</label>
-         <span>John</span>
+   <div fxLayout="row wrap" class="col-gap"
+      *ngIf="((UserRole$ | async)=='Admin' || (UserRole$ | async)=='Moderator') && (LoginStatus$ | async) as LoginStatus">
+      <div class="pt-3" fxFlex style="flex: 1 1 0%;box-sizing: border-box;margin-top: 0px;" fxFlex.xs="100"
+         fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" fxLayoutGap="20px" fxLayoutGap.xs="0px"
+         fxLayoutGap.sm="0px">
+         <h4>Edit Profile Information</h4><br>
+         <div class="proflie-field mb-3">
+            <label>FIRST NAME:</label>
+            <span>{{CurrentUser.firstName}}</span>
+         </div>
+         <div class="proflie-field mb-3">
+            <label>MIDDLE NAME:</label>
+            <span>{{CurrentUser.middleName}}</span>
+         </div>
+         <div class="proflie-field mb-3">
+            <label>LAST NAME:</label>
+            <span>{{CurrentUser.lastName}}</span>
+         </div>
+         <div class="proflie-field mb-3">
+            <label>USERNAME:</label>
+            <span>{{CurrentUser.userName}}</span>
+         </div>
+         <div class="proflie-field mb-3">
+            <label>EMAIL:</label>
+            <span>{{CurrentUser.email}}</span>
+         </div>
+         <div class="proflie-field mb-3">
+            <label>PHONE:</label>
+            <span>{{CurrentUser.phoneNumber}}</span>
+         </div>
       </div>
-      <div class="proflie-field mb-3">
-         <label>Last Name:</label>
-         <span>Doe</span>
+      <div class="pt-3" fxFlex style="flex: 1 1 0%;box-sizing: border-box;margin-top: 0px;" fxFlex.xs="100"
+         fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" fxLayoutGap="20px" fxLayoutGap.xs="0px"
+         fxLayoutGap.sm="0px">
+         <h4>Location</h4><br>
+         <div class="proflie-field mb-3" *ngFor="let item of CurrentUser.location | keyvalue">
+            <label>{{item.key | uppercase}}:</label>
+            <span>{{item.value}}</span>
+         </div>
       </div>
-      <div class="proflie-field mb-3">
-         <label>Gender:</label>
-         <span>Male</span>
-      </div>
-      <div class="proflie-field mb-3">
-         <label>Date of birth:</label>
-         <span>Jan,06,1979</span>
-      </div>
-      <div class="proflie-field mb-3">
-         <label>Mobile Number:</label>
-         <span>+120 256 254 125</span>
-      </div>
-      <div class="proflie-field mb-3">
-         <label>location:</label>
-         <span>New York</span>
-      </div>
-      <div class="proflie-field mb-3">
-         <label>E-mail id:</label>
-         <span class="text-ellipse">johnDoe@doe.com</span>
-      </div>
+   </div>
+   <div>
       <button mat-raised-button color="accent" [routerLink]="['edit']" [queryParams]="{type:'info'}">Edit</button>
    </div>
+
 </mat-card>

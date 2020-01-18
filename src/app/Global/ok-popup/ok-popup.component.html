@@ -1,0 +1,18 @@
+<div class="app-popup">
+    <div class="app-popup-content mb-4">
+        <h1 mat-dialog-title fxLayoutAlign="center center">{{mainMessage}}</h1>
+        <div mat-dialog-content *ngIf="!succeeded">
+            <h4 class="accent-color" fxLayoutAlign="center center">Errors List :</h4>
+            <br>
+            <ul *ngFor="let message of messages" style="list-style-type:none">
+                <li>
+                    <h6>{{message}}</h6>
+                </li>
+            </ul>
+            <br>
+        </div>
+        <div fxLayoutAlign="center center">
+            <button mat-raised-button color="accent" class="mr-3" (click)="dialogRef.close()">Close</button>
+        </div>
+    </div>
+</div>

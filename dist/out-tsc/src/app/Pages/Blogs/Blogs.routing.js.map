@@ -1,0 +1,1 @@
+{"version":3,"file":"Blogs.routing.js","sourceRoot":"","sources":["../../../../../../src/app/Pages/Blogs/Blogs.routing.ts"],"names":[],"mappings":"AAEA,OAAO,EAAE,gBAAgB,EAAE,MAAM,6BAA6B,CAAC;AAE/D,MAAM,CAAC,IAAM,WAAW,GAAY;IACnC;QACC,IAAI,EAAE,QAAQ;QACd,SAAS,EAAE,gBAAgB;KAC3B;IACC;QACG,IAAI,EAAE,YAAY;QAClB,SAAS,EAAE,gBAAgB;KAC7B;CACH,CAAA"}

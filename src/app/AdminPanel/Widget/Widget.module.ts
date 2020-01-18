@@ -13,7 +13,7 @@ import { MatSelectModule,
 			MatDatepickerModule,
 			MatTableModule
 		 } from '@angular/material';
-import { ChartsModule } from 'ng2-charts';
+/*import { ChartsModule } from 'ng2-charts';*/
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { TranslateModule } from '@ngx-translate/core';
 import { ReactiveFormsModule,FormsModule } from '@angular/forms';;
@@ -22,7 +22,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { TitleComponent } from './TitleComponent/TitleComponent.component';
 import { TopsideMenuComponent } from './Menu/TopsideMenu/TopsideMenu.component';
 import { DeleteListDialogComponent } from './PopUp/DeleteListDialog/DeleteListDialog.component';
-import { BuySellChartComponent } from './Charts/BuySellChart/BuySellChart.component';
 import { SeeListDialogComponent } from './PopUp/SeeListDialog/SeeListDialog.component';
 import { AddNewUserComponent } from './PopUp/AddNewUser/AddNewUser.component';
 import { HeaderUserProfileDropdownComponent } from './HeaderUserProfileDropdown/HeaderUserProfileDropdown.component';
@@ -33,7 +32,6 @@ import { RouterModule } from '@angular/router';
 		TitleComponent,
 		TopsideMenuComponent,
 		DeleteListDialogComponent,
-		BuySellChartComponent,
 		SeeListDialogComponent,
 		AddNewUserComponent,
 		HeaderUserProfileDropdownComponent
@@ -44,7 +42,7 @@ import { RouterModule } from '@angular/router';
 		MatInputModule,
 		MatFormFieldModule,
 		FormsModule,
-		ChartsModule,
+	/*	ChartsModule,*/
 		MatIconModule,
 		MatCardModule,
 		MatButtonModule,
@@ -63,7 +61,6 @@ import { RouterModule } from '@angular/router';
 	exports : [
 		TitleComponent,
 		TopsideMenuComponent,
-		BuySellChartComponent,
 		HeaderUserProfileDropdownComponent
 	],
 	entryComponents: [

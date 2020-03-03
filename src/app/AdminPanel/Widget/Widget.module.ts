@@ -26,6 +26,7 @@ import { SeeListDialogComponent } from './PopUp/SeeListDialog/SeeListDialog.comp
 import { AddNewUserComponent } from './PopUp/AddNewUser/AddNewUser.component';
 import { HeaderUserProfileDropdownComponent } from './HeaderUserProfileDropdown/HeaderUserProfileDropdown.component';
 import { RouterModule } from '@angular/router';
+import { EditUserComponent } from './PopUp/edit-user/edit-user.component';
 
 @NgModule({
 	declarations: [
@@ -34,7 +35,8 @@ import { RouterModule } from '@angular/router';
 		DeleteListDialogComponent,
 		SeeListDialogComponent,
 		AddNewUserComponent,
-		HeaderUserProfileDropdownComponent
+		HeaderUserProfileDropdownComponent,
+		EditUserComponent,
 	],
 	imports: [
 		CommonModule,
@@ -66,7 +68,8 @@ import { RouterModule } from '@angular/router';
 	entryComponents: [
       DeleteListDialogComponent,
       SeeListDialogComponent,
-      AddNewUserComponent
+	  AddNewUserComponent,
+	  EditUserComponent,
    ]
 })
 export class WidgetModule { }

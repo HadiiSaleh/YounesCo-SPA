@@ -8,10 +8,19 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { Component } from '@angular/core';
+import { AccountService } from 'src/app/Services/account.service';
+import { Router } from '@angular/router';
 var HeaderUserProfileDropdownComponent = /** @class */ (function () {
-    function HeaderUserProfileDropdownComponent() {
+    function HeaderUserProfileDropdownComponent(accountService, router) {
+        this.accountService = accountService;
+        this.router = router;
     }
     HeaderUserProfileDropdownComponent.prototype.ngOnInit = function () {
+    };
+    //log out method 
+    HeaderUserProfileDropdownComponent.prototype.logOut = function () {
+        this.accountService.logout();
+        this.router.navigate(['/session/signin']);
     };
     HeaderUserProfileDropdownComponent = __decorate([
         Component({
@@ -19,7 +28,7 @@ var HeaderUserProfileDropdownComponent = /** @class */ (function () {
             templateUrl: './HeaderUserProfileDropdown.component.html',
             styleUrls: ['./HeaderUserProfileDropdown.component.scss']
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [AccountService, Router])
     ], HeaderUserProfileDropdownComponent);
     return HeaderUserProfileDropdownComponent;
 }());

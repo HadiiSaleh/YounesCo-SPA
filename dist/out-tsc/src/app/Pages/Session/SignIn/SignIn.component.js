@@ -12,45 +12,75 @@ import { EmbryoService } from '../../../Services/Embryo.service';
 import { AccountService } from '../../../Services/account.service';
 import { FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from "@angular/router";
+import { ToastaService } from 'ngx-toasta';
 var SignInComponent = /** @class */ (function () {
-    function SignInComponent(embryoService, acct, router, route, fb) {
+    function SignInComponent(embryoService, accountService, router, route, fb, toastyService) {
         this.embryoService = embryoService;
-        this.acct = acct;
+        this.accountService = accountService;
         this.router = router;
         this.route = route;
         this.fb = fb;
+        this.toastyService = toastyService;
+        // Toast Options
+        this.toastOption = {
+            title: "Sign-in",
+            msg: "You sign-in successfully!",
+            showClose: true,
+            timeout: 3000,
+            theme: "material"
+        };
     }
     SignInComponent.prototype.onSubmit = function () {
         var _this = this;
+        this.embryoService.loadingToasty();
         var userlogin = this.insertForm.value;
-        this.acct.login(userlogin.Username, userlogin.Password).subscribe(function (result) {
+        this.accountService.login(userlogin.Username, userlogin.Password).subscribe(function (result) {
+            _this.accountService.rememberMyUserName(_this.insertForm.get('Username').value, userlogin.RememberMe);
+            _this.messagesList = [];
             var token = result.token;
-            // console.log(token);
-            // console.log(result.userRole);
-            // console.log(this.returnUrl);
             console.log("User Logged In Successfully");
-            _this.invalidLogin = false;
+            _this.embryoService.closeToasty();
             if (result.userRole == "Customer")
-                _this.router.navigateByUrl(_this.returnUrl);
+                _this.router.navigate([_this.returnUrl]).then(function () {
+                    _this.toastyService.success(_this.toastOption);
+                });
             else
-                _this.router.navigateByUrl(_this.adminReturnUrl);
+                _this.router.navigate([_this.adminReturnUrl]).then(function () {
+                    _this.toastyService.success(_this.toastOption);
+                });
         }, function (error) {
-            _this.invalidLogin = true;
-            _this.ErrorMessage = error.error.loginError;
-            console.log(_this.ErrorMessage);
+            _this.messagesList = [];
+            if (error.status == 400) {
+                for (var i = 0; i < error.error.errors['Password'].length; i++) {
+                    if (error.error.errors['Password'][i] == "The field Password must match the regular expression '^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9_]).*$'.")
+                        _this.messagesList.push('"The field Password must contain at least 6 characters, including at least 1 Lower case, 1 Upper case, 1 Digits and 1 Special character');
+                    console.log(error.error.errors['Password'][i]);
+                }
+            }
+            else if (error.status == 401)
+                _this.messagesList.push(error.error.loginError);
+            _this.messagesList.push("Failed to login!");
+            console.log(error);
+            _this.embryoService.closeToasty();
+            _this.embryoService.OkPopup(_this.messagesList);
         });
     };
     SignInComponent.prototype.ngOnInit = function () {
+        var rememberMeStatus = this.accountService.checkRememberMeStatus();
         // Initialize Form Controls
         this.Username = new FormControl('', [Validators.required]);
         this.Password = new FormControl('', [Validators.required]);
+        this.RememberMe = new FormControl(rememberMeStatus);
+        if (rememberMeStatus)
+            this.Username.setValue(this.accountService.getRememberMeUserName());
         // get return url from route parameters or default to '/'
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
         this.adminReturnUrl = this.route.snapshot.queryParams['returnUrl'] || '/admin-panel';
         // Initialize FormGroup using FormBuilder
         this.insertForm = this.fb.group({
             "Username": this.Username,
-            "Password": this.Password
+            "Password": this.Password,
+            'RememberMe': this.RememberMe
         });
     };
     SignInComponent = __decorate([
@@ -63,7 +93,8 @@ var SignInComponent = /** @class */ (function () {
             AccountService,
             Router,
             ActivatedRoute,
-            FormBuilder])
+            FormBuilder,
+            ToastaService])
     ], SignInComponent);
     return SignInComponent;
 }());

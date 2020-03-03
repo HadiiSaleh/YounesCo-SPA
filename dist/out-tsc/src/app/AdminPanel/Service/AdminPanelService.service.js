@@ -15,6 +15,8 @@ import { DeleteListDialogComponent } from '../Widget/PopUp/DeleteListDialog/Dele
 import { SeeListDialogComponent } from '../Widget/PopUp/SeeListDialog/SeeListDialog.component';
 import { AddNewUserComponent } from '../Widget/PopUp/AddNewUser/AddNewUser.component';
 import { AngularFireDatabase } from "@angular/fire/database";
+import { environment } from 'src/environments/environment';
+import { shareReplay } from 'rxjs/operators';
 var AdminPanelServiceService = /** @class */ (function () {
     function AdminPanelServiceService(http, dialog, db) {
         this.http = http;
@@ -23,6 +25,12 @@ var AdminPanelServiceService = /** @class */ (function () {
         this.sidenavOpen = true;
         this.sidenavMode = "side";
         this.chatSideBarOpen = true;
+        // Urls to access accounts Web API’s
+        this.baseUrlGetAllUsersByRole = environment.apiUrl + "accounts/GetUsersByRole";
+        this.baseUrlGetAllUsers = environment.apiUrl + "accounts/GetAllUsers";
+        this.baseUrlDeleteUserById = environment.apiUrl + "accounts/DeleteUserById";
+        this.baseUrlUnDelteUserById = environment.apiUrl + "accounts/UnDelteUserById";
+        this.baseUrlChangeRole = environment.apiUrl + "accounts/ChangeRole";
     }
     /*
         ---------- Pop Up Function ----------
@@ -59,9 +67,7 @@ var AdminPanelServiceService = /** @class */ (function () {
     };
     //getCollaborationContent method is used to get the Collaboration table data.
     AdminPanelServiceService.prototype.getCollaborationContent = function () {
-        var collaboration;
-        collaboration = this.db.list("collaborationData");
-        return collaboration;
+        return this.http.get(this.baseUrlGetAllUsersByRole + "/Customer").pipe(shareReplay());
     };
     //seeList function is used to open the see Dialog Component.
     AdminPanelServiceService.prototype.seeList = function () {
@@ -73,6 +79,36 @@ var AdminPanelServiceService = /** @class */ (function () {
         var dialogRef;
         dialogRef = this.dialog.open(AddNewUserComponent);
         return dialogRef.afterClosed();
+    };
+    AdminPanelServiceService.prototype.getAllUsersByRole = function (role) {
+        switch (role) {
+            case "Admin":
+                if (!this.Admins$) {
+                    this.Admins$ = this.http.get(this.baseUrlGetAllUsersByRole + "/" + role).pipe(shareReplay());
+                }
+                // if Admins cache exists return it
+                return this.Admins$;
+            case "Moderator":
+                if (!this.Moderators$) {
+                    this.Moderators$ = this.http.get(this.baseUrlGetAllUsersByRole + "/" + role).pipe(shareReplay());
+                }
+                // if Admins cache exists return it
+                return this.Moderators$;
+            default:
+                if (!this.Customers$) {
+                    this.Customers$ = this.http.get(this.baseUrlGetAllUsersByRole + "/" + role).pipe(shareReplay());
+                }
+                // if Admins cache exists return it
+                return this.Customers$;
+        }
+    };
+    // API:Delete User by id
+    AdminPanelServiceService.prototype.deleteUserById = function (id) {
+        return this.http.delete(this.baseUrlDeleteUserById + "/" + id);
+    };
+    // API:UnDelete User by id
+    AdminPanelServiceService.prototype.unDeleteUserById = function (id) {
+        return this.http.delete(this.baseUrlUnDelteUserById + "/" + id);
     };
     AdminPanelServiceService = __decorate([
         Injectable({

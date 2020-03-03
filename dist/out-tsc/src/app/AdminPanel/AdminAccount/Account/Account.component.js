@@ -8,23 +8,30 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { Component } from '@angular/core';
-import { AdminPanelServiceService } from '../../Service/AdminPanelService.service';
 import { AccountService } from '../../../Services/account.service';
+import { ActivatedRoute } from '@angular/router';
 var AccountComponent = /** @class */ (function () {
-    function AccountComponent(adminService, acct) {
-        this.adminService = adminService;
-        this.acct = acct;
+    function AccountComponent(accountService, route) {
+        this.accountService = accountService;
+        this.route = route;
     }
+    AccountComponent.prototype.onActivate = function (componentReference) {
+        var _this = this;
+        componentReference.getCurrentUser(this.CurrentUser);
+        //Below will subscribe to the sentCurrentUser emitter
+        if (componentReference.sentCurrentUser != undefined)
+            componentReference.sentCurrentUser.subscribe(function (data) {
+                // Will receive the data from child here
+                _this.CurrentUser = data;
+            });
+    };
     AccountComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.LoginStatus$ = this.acct.isLoggedIn;
-        this.UserName$ = this.acct.currentUserName;
-        this.UserRole$ = this.acct.currentUserRole;
-        this.acct.currentUserName.subscribe(function (result) { _this.CurrentUserName = result; });
-        this.acct.currentUserRole.subscribe(function (result) { _this.CurrentRole = result; });
-        this.acct.getAllUsersByRole(this.CurrentRole).subscribe(function (result) { console.log(result); });
-        this.acct.getUserByUsername(this.CurrentUserName, this.CurrentRole).subscribe(function (result) { console.log(result); });
-        console.log(this.CurrentUser.Email);
+        this.route.data.subscribe(function (data) {
+            _this.CurrentUser = data['user'];
+        });
+        this.LoginStatus$ = this.accountService.isLoggedIn;
+        this.UserRole$ = this.accountService.currentUserRole;
     };
     AccountComponent = __decorate([
         Component({
@@ -32,8 +39,7 @@ var AccountComponent = /** @class */ (function () {
             templateUrl: './Account.component.html',
             styleUrls: ['./Account.component.scss']
         }),
-        __metadata("design:paramtypes", [AdminPanelServiceService,
-            AccountService])
+        __metadata("design:paramtypes", [AccountService, ActivatedRoute])
     ], AccountComponent);
     return AccountComponent;
 }());

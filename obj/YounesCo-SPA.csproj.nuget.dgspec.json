@@ -1,20 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\pc\\Desktop\\YounesCo\\YounesCo-SPA\\YounesCo-SPA.csproj": {}
+    "D:\\hadi\\YounesCo\\YounesCo-SPA\\YounesCo-SPA.csproj": {}
   },
   "projects": {
-    "C:\\Users\\pc\\Desktop\\YounesCo\\YounesCo-SPA\\YounesCo-SPA.csproj": {
+    "D:\\hadi\\YounesCo\\YounesCo-SPA\\YounesCo-SPA.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\pc\\Desktop\\YounesCo\\YounesCo-SPA\\YounesCo-SPA.csproj",
+        "projectUniqueName": "D:\\hadi\\YounesCo\\YounesCo-SPA\\YounesCo-SPA.csproj",
         "projectName": "YounesCo-SPA",
-        "projectPath": "C:\\Users\\pc\\Desktop\\YounesCo\\YounesCo-SPA\\YounesCo-SPA.csproj",
-        "packagesPath": "C:\\Users\\pc\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\pc\\Desktop\\YounesCo\\YounesCo-SPA\\obj\\",
+        "projectPath": "D:\\hadi\\YounesCo\\YounesCo-SPA\\YounesCo-SPA.csproj",
+        "packagesPath": "C:\\Users\\Hadi\\.nuget\\packages\\",
+        "outputPath": "D:\\hadi\\YounesCo\\YounesCo-SPA\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\pc\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Hadi\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -54,7 +57,7 @@
             },
             {
               "name": "Microsoft.NETCore.App.Host.win-x64",
-              "version": "[3.0.1, 3.0.1]"
+              "version": "[3.0.2, 3.0.2]"
             },
             {
               "name": "Microsoft.NETCore.App.Ref",
@@ -73,7 +76,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
         }
       }
     }

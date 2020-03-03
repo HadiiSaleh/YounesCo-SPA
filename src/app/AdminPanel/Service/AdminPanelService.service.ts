@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
 import 'rxjs/Rx';
 import * as screenfull from 'screenfull';
-import { MatDialogRef, MatDialog } from '@angular/material';
+import { MatDialogRef, MatDialog, MatDialogConfig } from '@angular/material';
 import { DeleteListDialogComponent } from '../Widget/PopUp/DeleteListDialog/DeleteListDialog.component';
 import { SeeListDialogComponent } from '../Widget/PopUp/SeeListDialog/SeeListDialog.component';
 import { AddNewUserComponent } from '../Widget/PopUp/AddNewUser/AddNewUser.component';
@@ -11,6 +11,7 @@ import { AngularFireDatabase, AngularFireList, AngularFireObject } from "@angula
 import { User } from '../Interfaces/User';
 import { environment } from 'src/environments/environment';
 import { shareReplay } from 'rxjs/operators';
+import { EditUserComponent } from '../Widget/PopUp/edit-user/edit-user.component';
 
 @Injectable({
 	providedIn: 'root'
@@ -47,6 +48,32 @@ export class AdminPanelServiceService {
 	/*
 		---------- Pop Up Function ----------
 	*/
+
+	//seeList function is used to open the see Dialog Component.
+	seeList() {
+		let dialogRef: MatDialogRef<SeeListDialogComponent>;
+		dialogRef = this.dialog.open(SeeListDialogComponent);
+	}
+
+	//addNewUserDialog function is used to open Add new user Dialog Component. 
+	addNewUserDialog() {
+		let dialogRef: MatDialogRef<AddNewUserComponent>;
+		dialogRef = this.dialog.open(AddNewUserComponent);
+
+		return dialogRef.afterClosed();
+	}
+
+	//editUserDialog function is used to open edit user Dialog Component. 
+	editUserDialog(userEdit: User) {
+		const dialogConfig = new MatDialogConfig();
+
+		dialogConfig.data = userEdit;
+
+		let dialogRef: MatDialogRef<EditUserComponent>;
+		dialogRef = this.dialog.open(EditUserComponent, dialogConfig);
+
+		return dialogRef.afterClosed();
+	}
 
 	//deleteDiaglog function is used to open the Delete Dialog Component. 
 	deleteDialog(data: string) {
@@ -86,23 +113,10 @@ export class AdminPanelServiceService {
 
 	//getCollaborationContent method is used to get the Collaboration table data.
 	getCollaborationContent() {
-		return this.http.get<User[]>(this.baseUrlGetAllUsersByRole + "/Customer").pipe(shareReplay());
+		return this.http.get<User[]>(this.baseUrlGetAllUsersByRole + "/Moderator").pipe(shareReplay());
 	}
 
-	//seeList function is used to open the see Dialog Component.
-	seeList() {
-		let dialogRef: MatDialogRef<SeeListDialogComponent>;
-		dialogRef = this.dialog.open(SeeListDialogComponent);
-	}
-
-	//addNewUserDialog function is used to open Add new user Dialog Component. 
-	addNewUserDialog() {
-		let dialogRef: MatDialogRef<AddNewUserComponent>;
-		dialogRef = this.dialog.open(AddNewUserComponent);
-
-		return dialogRef.afterClosed();
-	}
-
+	// API:Delete Users by role
 	getAllUsersByRole(role: string): Observable<User[]> {
 		switch (role) {
 			case "Admin":

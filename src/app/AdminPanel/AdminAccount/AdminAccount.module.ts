@@ -13,7 +13,10 @@ import {
 	MatFormFieldModule,
 	MatSelectModule,
 	MatTableModule,
-	MatCheckboxModule
+	MatCheckboxModule,
+	MatSortModule,
+	MatPaginatorModule,
+	MatTooltipModule
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -45,8 +48,11 @@ import { AdminAccountRoutes } from './AdminAccount.routing';
 		FormsModule,
 		ReactiveFormsModule,
 		MatTableModule,
+		MatPaginatorModule,
+		MatSortModule,
 		FlexLayoutModule,
-		MatCheckboxModule
+		MatCheckboxModule,
+		MatTooltipModule,
 	]
 })
 export class AdminAccountModule { }

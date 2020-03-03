@@ -49,6 +49,7 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { AdminPanelModule } from './AdminPanel/admin-panel.module';
 import { JwtInterceptor } from './_helper/jwt.Interceptor';
+import { CurrentUserResover } from './_resolvers/current-user.resolver';
 var DEFAULT_PERFECT_SCROLLBAR_CONFIG = {
     suppressScrollX: true
 };
@@ -143,7 +144,8 @@ var AppModule = /** @class */ (function () {
                     provide: HTTP_INTERCEPTORS,
                     useClass: JwtInterceptor,
                     multi: true
-                }
+                },
+                CurrentUserResover
             ],
             exports: [
                 RouterModule,

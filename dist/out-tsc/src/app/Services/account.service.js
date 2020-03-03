@@ -10,26 +10,23 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
-import { map, flatMap, first, shareReplay } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import * as jwt_decode from "jwt-decode";
+import { environment } from 'src/environments/environment';
 var AccountService = /** @class */ (function () {
     // Need HttpClient to communicate over HTTP with Web API
     function AccountService(http, router) {
         this.http = http;
         this.router = router;
-        // Url to access accounts Web API’s
-        this.baseUrlLogin = "https://localhost:44364/api/accounts/login";
-        this.baseUrlRegister = "https://localhost:44364/api/accounts/register";
-        this.baseUrlForgotPassword = "/api/accounts/forgotpassword";
-        this.baseUrlGetAllUsersByRole = "https://localhost:44364/api/accounts/GetUsersByRole";
-        this.baseUrlGetAllUsers = "/api/accounts/GetAllUsers";
-        this.baseUrlGetUserByUsername = "https://localhost:44364/api/accounts/GetUserByUsername";
-        this.baseUrlGetUserById = "https://localhost:44364/api/accounts/GetUserById";
-        this.baseUrlUpdateUserById = "/api/accounts/UpdateUserById";
-        this.baseUrlDeleteUserById = "/api/accounts/DeleteUserById";
-        this.baseUrlUnDelteUserById = "/api/accounts/UnDelteUserById";
-        this.baseUrlChangeRole = "/api/accounts/ChangeRole";
+        // Urls to access accounts Web API’s
+        this.baseUrlLogin = environment.apiUrl + "accounts/login";
+        this.baseUrlRegister = environment.apiUrl + "accounts/register";
+        this.baseUrlForgotPassword = environment.apiUrl + "accounts/forgotpassword";
+        this.baseUrlResetPassword = environment.apiUrl + "accounts/resetpassword";
+        this.baseUrlGetUserByUsername = environment.apiUrl + "accounts/GetUserByUsername";
+        this.baseUrlGetUserById = environment.apiUrl + "accounts/GetUserById";
+        this.baseUrlUpdateUserById = environment.apiUrl + "accounts/UpdateUserById";
         // User related properties
         this.loginStatus = new BehaviorSubject(this.checkLoginStatus());
         this.UserName = new BehaviorSubject(localStorage.getItem('username'));
@@ -46,7 +43,6 @@ var AccountService = /** @class */ (function () {
             // login successful if there's a jwt token in the response
             if (result && result.token) {
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
-                _this.loginStatus.next(true);
                 localStorage.setItem('loginStatus', '1');
                 localStorage.setItem('jwt', result.token);
                 localStorage.setItem('username', result.username);
@@ -54,18 +50,19 @@ var AccountService = /** @class */ (function () {
                 localStorage.setItem('userRole', result.userRole);
                 _this.UserName.next(localStorage.getItem('username'));
                 _this.UserRole.next(localStorage.getItem('userRole'));
+                _this.loginStatus.next(true);
             }
             return result;
         }));
     };
     AccountService.prototype.logout = function () {
-        // Set Loginstatus to false and delete saved jwt cookie
-        this.loginStatus.next(false);
+        // Set Loginstatus to false and delete saved jwt cookie  
         localStorage.removeItem('jwt');
         localStorage.removeItem('userRole');
         localStorage.removeItem('username');
         localStorage.removeItem('expiration');
         localStorage.setItem('loginStatus', '0');
+        this.loginStatus.next(false);
         this.router.navigate(['/session']);
         console.log("Logged Out Successfully");
     };
@@ -92,13 +89,7 @@ var AccountService = /** @class */ (function () {
             }
             console.log("NEW DATE " + new Date().valueOf());
             console.log("Token DATE " + tokenExpDate.valueOf());
-            localStorage.removeItem('jwt');
-            localStorage.removeItem('userRole');
-            localStorage.removeItem('username');
-            localStorage.removeItem('expiration');
-            localStorage.setItem('loginStatus', '0');
-            this.router.navigate(['/session']);
-            console.log("Logged Out Successfully");
+            this.logout();
             return false;
         }
         return false;
@@ -124,36 +115,9 @@ var AccountService = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    //forgot Password
-    AccountService.prototype.forgotPasswrod = function (email) {
-        return this.http.post(this.baseUrlForgotPassword, { email: email });
-    };
-    AccountService.prototype.getAllUsersByRole = function (role) {
-        switch (role) {
-            case "Admin":
-                if (!this.Admins$) {
-                    this.Admins$ = this.http.get(this.baseUrlGetAllUsersByRole + "/" + role).pipe(shareReplay());
-                }
-                // if Admins cache exists return it
-                return this.Admins$;
-            case "Moderator":
-                if (!this.Moderators$) {
-                    this.Moderators$ = this.http.get(this.baseUrlGetAllUsersByRole + "/" + role).pipe(shareReplay());
-                }
-                // if Admins cache exists return it
-                return this.Moderators$;
-            default:
-                if (!this.Customers$) {
-                    this.Customers$ = this.http.get(this.baseUrlGetAllUsersByRole + "/" + role).pipe(shareReplay());
-                }
-                // if Admins cache exists return it
-                return this.Customers$;
-        }
-    };
-    // Get User by his username
-    AccountService.prototype.getUserByUsername = function (username, role) {
-        return this.getAllUsersByRole(role).pipe(flatMap(function (result) { return result; }), first(function (user) { return user.UserName == username; }));
-        //return this.http.get<User>(this.baseUrlGetUserByUsername + "/" + username);
+    AccountService.prototype.changeCurrentUsername = function (username) {
+        localStorage.setItem('username', username);
+        this.UserName.next(username);
     };
     // Custom Validator
     AccountService.prototype.MustMatch = function (passwordControl) {
@@ -175,9 +139,45 @@ var AccountService = /** @class */ (function () {
             }
         };
     };
-    // Clear Cache
-    AccountService.prototype.clearCache = function () {
-        this.Users$ = null;
+    AccountService.prototype.rememberMyUserName = function (username, option) {
+        localStorage.setItem('rememberMeStatus', option.valueOf().toString());
+        if (option == true)
+            localStorage.setItem('rememberUserName', username);
+        else
+            localStorage.removeItem('rememberUserName');
+        ;
+    };
+    AccountService.prototype.checkRememberMeStatus = function () {
+        var rememberMe = localStorage.getItem('rememberMeStatus');
+        if (rememberMe == 'true')
+            return true;
+        localStorage.setItem('rememberMeStatus', 'false');
+        localStorage.removeItem('rememberUserName');
+        return false;
+    };
+    AccountService.prototype.getRememberMeUserName = function () {
+        return localStorage.getItem('rememberUserName');
+    };
+    /*---APIs---*/
+    // API:forgot Password
+    AccountService.prototype.forgotPasswrod = function (email) {
+        return this.http.post(this.baseUrlForgotPassword, { email: email });
+    };
+    // API:reset Password
+    AccountService.prototype.resetPasswrod = function (data) {
+        return this.http.post(this.baseUrlResetPassword, data);
+    };
+    // API:Get User by his id
+    AccountService.prototype.getUserById = function (id) {
+        return this.http.get(this.baseUrlGetUserById + "/" + id);
+    };
+    // API:Get User by his username
+    AccountService.prototype.getUserByUserName = function (username) {
+        return this.http.get(this.baseUrlGetUserByUsername + "/" + username);
+    };
+    // API:Update User
+    AccountService.prototype.updateUserById = function (id, editUser) {
+        return this.http.put(this.baseUrlUpdateUserById + "/" + id, editUser);
     };
     AccountService = __decorate([
         Injectable({

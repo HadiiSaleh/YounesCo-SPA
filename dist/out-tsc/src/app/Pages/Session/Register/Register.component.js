@@ -13,9 +13,9 @@ import { AccountService } from '../../../Services/account.service';
 import { FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from "@angular/router";
 var RegisterComponent = /** @class */ (function () {
-    function RegisterComponent(embryoService, acct, router, route, fb) {
+    function RegisterComponent(embryoService, accountService, router, route, fb) {
         this.embryoService = embryoService;
-        this.acct = acct;
+        this.accountService = accountService;
         this.router = router;
         this.route = route;
         this.fb = fb;
@@ -28,7 +28,7 @@ var RegisterComponent = /** @class */ (function () {
         var _this = this;
         this.embryoService.loadingToasty();
         var newUser = this.insertForm.value;
-        this.acct.register(newUser).subscribe(function (result) {
+        this.accountService.register(newUser).subscribe(function (result) {
             _this.messagesList = [];
             console.log("Registration Succeeded!");
             _this.messagesList.push("Thank you for you registration!Please check whether the email is in the junk folder of your email account, since confirmation mails with backlinks are sometimes classified as spam");
@@ -52,9 +52,9 @@ var RegisterComponent = /** @class */ (function () {
         // Initialize Form Controls
         this.Username = new FormControl('', [Validators.required, Validators.maxLength(256)]);
         this.Password = new FormControl('', [Validators.required, Validators.pattern(this.passRegex), Validators.maxLength(256), Validators.minLength(6)]);
-        this.ConfirmPassword = new FormControl('', [Validators.required, this.acct.MustMatch(this.Password)]);
+        this.ConfirmPassword = new FormControl('', [Validators.required, this.accountService.MustMatch(this.Password)]);
         this.Email = new FormControl('', [Validators.required, Validators.email, Validators.maxLength(256)]);
-        this.Phone = new FormControl('', [Validators.required, Validators.pattern(this.phoneRegex), Validators.maxLength(256)]);
+        this.PhoneNumber = new FormControl('', [Validators.required, Validators.pattern(this.phoneRegex), Validators.maxLength(256)]);
         this.FirstName = new FormControl('', [Validators.required, Validators.pattern(this.nameRegex), Validators.maxLength(256)]);
         this.MiddleName = new FormControl('', [Validators.pattern(this.nameRegex), Validators.maxLength(256)]);
         this.LastName = new FormControl('', [Validators.required, Validators.pattern(this.nameRegex), Validators.maxLength(256)]);
@@ -81,7 +81,7 @@ var RegisterComponent = /** @class */ (function () {
             "Password": this.Password,
             "ConfirmPassword": this.ConfirmPassword,
             "Email": this.Email,
-            "Phone": this.Phone,
+            "PhoneNumber": this.PhoneNumber,
             "role": 'Customer',
             "FirstName": this.FirstName,
             "MiddleName": this.MiddleName,

@@ -20,7 +20,8 @@ export var AdminPanelRoutes = [
                 }
             },
             {
-                path: 'account', loadChildren: function () {
+                path: 'account',
+                loadChildren: function () {
                     return import('./AdminAccount/AdminAccount.module').then(function (m) { return m.AdminAccountModule; });
                 }
             }

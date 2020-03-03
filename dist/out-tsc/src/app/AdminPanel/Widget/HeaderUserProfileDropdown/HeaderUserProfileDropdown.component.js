@@ -9,14 +9,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AccountService } from 'src/app/Services/account.service';
 var HeaderUserProfileDropdownComponent = /** @class */ (function () {
-    function HeaderUserProfileDropdownComponent(router) {
+    function HeaderUserProfileDropdownComponent(router, accountService) {
         this.router = router;
+        this.accountService = accountService;
     }
     HeaderUserProfileDropdownComponent.prototype.ngOnInit = function () {
     };
     //log out method 
     HeaderUserProfileDropdownComponent.prototype.logOut = function () {
+        this.accountService.logout();
         document.getElementById('html').classList.remove("admin-panel");
         this.router.navigate(['/session/signin']);
     };
@@ -26,7 +29,7 @@ var HeaderUserProfileDropdownComponent = /** @class */ (function () {
             templateUrl: './HeaderUserProfileDropdown.component.html',
             styleUrls: ['./HeaderUserProfileDropdown.component.scss']
         }),
-        __metadata("design:paramtypes", [Router])
+        __metadata("design:paramtypes", [Router, AccountService])
     ], HeaderUserProfileDropdownComponent);
     return HeaderUserProfileDropdownComponent;
 }());

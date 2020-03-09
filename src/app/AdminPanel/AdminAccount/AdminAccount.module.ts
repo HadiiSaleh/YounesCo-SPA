@@ -16,7 +16,8 @@ import {
 	MatCheckboxModule,
 	MatSortModule,
 	MatPaginatorModule,
-	MatTooltipModule
+	MatTooltipModule,
+	MatProgressSpinnerModule 
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -53,6 +54,7 @@ import { AdminAccountRoutes } from './AdminAccount.routing';
 		FlexLayoutModule,
 		MatCheckboxModule,
 		MatTooltipModule,
+		MatProgressSpinnerModule
 	]
 })
 export class AdminAccountModule { }

@@ -52,6 +52,9 @@ export class CollaborationComponent implements OnInit {
 
    dataSource = new MatTableDataSource<any>(this.collaborationData);
 
+   isLoading = true;
+   role = "Moderator";
+
    constructor(
       private changeDetectorRefs: ChangeDetectorRef,
       public adminService: AdminPanelServiceService,
@@ -62,12 +65,17 @@ export class CollaborationComponent implements OnInit {
 
    getCurrentUser(currentUser: User) {
       this.CurrentUser = currentUser
-    }
+   }
 
    ngOnInit() {
       this.LoginStatus$ = this.accountService.isLoggedIn;
       this.UserRole$ = this.accountService.currentUserRole;
-      this.adminService.getCollaborationContent().subscribe(res => this.getCollaborationData(res));
+      this.adminService.getCollaborationContent().subscribe(
+         res => {
+            this.getCollaborationData(res);
+         },
+         error => this.isLoading = false
+      );
    }
 
    /** 
@@ -79,14 +87,16 @@ export class CollaborationComponent implements OnInit {
       setTimeout(() => {
          this.dataSource.paginator = this.paginator;
          this.dataSource.sort = this.sort;
-      }, 0)
+      }, 0);
+
+      this.isLoading = false;
    }
 
    /** 
      * addNewUserDialog method is used to open a add new client dialog.
      */
    addNewUserDialog() {
-      this.adminService.addNewUserDialog().
+      this.adminService.addNewUserDialog(this.role).
          subscribe(res => { this.popUpNewUserResponse = res },
             err => console.log(err),
             () => this.getAddUserPopupResponse(this.popUpNewUserResponse))
@@ -107,7 +117,7 @@ export class CollaborationComponent implements OnInit {
 
                this.messagesList = [];
 
-               console.log("Moderator creation succeeded!");
+               console.log(this.role + " creation succeeded!");
 
                this.toastyService.success(this.toastOptionOperationSucceeded);
 
@@ -122,7 +132,7 @@ export class CollaborationComponent implements OnInit {
                   console.log(error.error.value[i]);
                }
 
-               this.messagesList.push("Moderator creation failed!");
+               this.messagesList.push(this.role + " creation failed!");
 
                this.embryoService.OkPopup(this.messagesList);
 
@@ -157,7 +167,7 @@ export class CollaborationComponent implements OnInit {
 
                this.messagesList = [];
 
-               console.log("Moderator's information updated successfully!");
+               console.log(this.role + "'s information updated successfully!");
 
                this.toastyService.success(this.toastOptionOperationSucceeded);
 

@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { AccountService } from '../../../../Services/account.service'
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 
@@ -39,11 +39,17 @@ export class AddNewUserComponent implements OnInit {
 	//Messages
 	messagesList: string[];
 
+	//Global variables
+	role: string;
+
 	constructor(
 		private accountService: AccountService,
 		private fb: FormBuilder,
-		public dialogRef: MatDialogRef<AddNewUserComponent>
-	) { }
+		public dialogRef: MatDialogRef<AddNewUserComponent>,
+		@Inject(MAT_DIALOG_DATA) data
+	) {
+		this.role = data;
+	}
 
 	// onSubmit method is submit a add new user form.
 	onSubmit() {
@@ -87,7 +93,7 @@ export class AddNewUserComponent implements OnInit {
 			"ConfirmPassword": this.ConfirmPassword,
 			"Email": this.Email,
 			"PhoneNumber": this.PhoneNumber,
-			"role": 'Moderator',
+			"role": this.role,
 			"FirstName": this.FirstName,
 			"MiddleName": this.MiddleName,
 			"LastName": this.LastName,

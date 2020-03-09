@@ -25,14 +25,6 @@ export class AdminPanelServiceService {
 	editProductData: any;
 	products: AngularFireObject<any>;
 
-
-	//users arrays
-
-	private Admins$: Observable<User[]>;
-	private Moderators$: Observable<User[]>;
-	private Customers$: Observable<User[]>;
-
-
 	// Urls to access accounts Web API’s
 
 	private baseUrlGetAllUsersByRole: string = environment.apiUrl + "accounts/GetUsersByRole";
@@ -56,9 +48,13 @@ export class AdminPanelServiceService {
 	}
 
 	//addNewUserDialog function is used to open Add new user Dialog Component. 
-	addNewUserDialog() {
+	addNewUserDialog(role: string) {
+		const dialogConfig = new MatDialogConfig();
+
+		dialogConfig.data = role;
+
 		let dialogRef: MatDialogRef<AddNewUserComponent>;
-		dialogRef = this.dialog.open(AddNewUserComponent);
+		dialogRef = this.dialog.open(AddNewUserComponent, dialogConfig);
 
 		return dialogRef.afterClosed();
 	}
@@ -120,25 +116,13 @@ export class AdminPanelServiceService {
 	getAllUsersByRole(role: string): Observable<User[]> {
 		switch (role) {
 			case "Admin":
-				if (!this.Admins$) {
-					this.Admins$ = this.http.get<User[]>(this.baseUrlGetAllUsersByRole + "/" + role).pipe(shareReplay());
-				}
-				// if Admins cache exists return it
-				return this.Admins$;
+				return this.http.get<User[]>(this.baseUrlGetAllUsersByRole + "/" + role).pipe(shareReplay());
 
 			case "Moderator":
-				if (!this.Moderators$) {
-					this.Moderators$ = this.http.get<User[]>(this.baseUrlGetAllUsersByRole + "/" + role).pipe(shareReplay());
-				}
-				// if Admins cache exists return it
-				return this.Moderators$;
+				return this.http.get<User[]>(this.baseUrlGetAllUsersByRole + "/" + role).pipe(shareReplay());
 
 			default:
-				if (!this.Customers$) {
-					this.Customers$ = this.http.get<User[]>(this.baseUrlGetAllUsersByRole + "/" + role).pipe(shareReplay());
-				}
-				// if Admins cache exists return it
-				return this.Customers$;
+				return this.http.get<User[]>(this.baseUrlGetAllUsersByRole + "/" + role).pipe(shareReplay());
 		}
 	}
 

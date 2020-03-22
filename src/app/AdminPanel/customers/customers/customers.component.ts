@@ -1,11 +1,14 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AdminPanelServiceService } from '../../Service/AdminPanelService.service';
-import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
+import { MatSort, MatPaginator } from '@angular/material';
 import { AccountService } from 'src/app/Services/account.service';
-import { Observable } from 'rxjs';
+import { Observable, merge, fromEvent } from 'rxjs';
 import { User } from '../../Interfaces/User';
 import { EmbryoService } from 'src/app/Services/Embryo.service';
 import { ToastaService, ToastOptions } from 'ngx-toasta';
+import { UsersDataSource } from '../../Helpers/UsersDataSource'
+import { tap, debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { PagedUsers } from '../../Interfaces/PagedUsers';
 
 @Component({
   selector: 'app-customers',
@@ -34,6 +37,7 @@ export class CustomersComponent implements OnInit {
   UserRole$: Observable<string>;
   CurrentUser: User;
   collaborationData: User[];
+  collaborationPagedResult: PagedUsers;
 
   //Popup properties
   popUpDeleteUserResponse: any;
@@ -44,16 +48,17 @@ export class CustomersComponent implements OnInit {
   //Messages
   messagesList: string[];
 
-  displayedColumns: string[] = ['id','displayName', 'userName', 'email', 'phoneNumber','location', 'createdAt', 'updatedAt', 'action'];
+  displayedColumns: string[] = ['id', 'displayName', 'userName', 'email', 'phoneNumber', 'location', 'createdAt', 'updatedAt', 'action'];
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort: MatSort;
+  @ViewChild('input', { static: false }) input: ElementRef;
 
-  dataSource = new MatTableDataSource<any>(this.collaborationData);
+  //dataSource = new MatTableDataSource<any>(this.collaborationData);
+  dataSource: UsersDataSource;
   isLoading = true;
   role = "Customer";
 
   constructor(
-    private changeDetectorRefs: ChangeDetectorRef,
     public adminService: AdminPanelServiceService,
     private accountService: AccountService,
     private toastyService: ToastaService,
@@ -67,26 +72,51 @@ export class CustomersComponent implements OnInit {
   ngOnInit() {
     this.LoginStatus$ = this.accountService.isLoggedIn;
     this.UserRole$ = this.accountService.currentUserRole;
-    this.adminService.getAllUsersByRole(this.role).subscribe(
-      res => {
-        this.getUserListData(res);
-      },
-      error => this.isLoading = false
+
+    this.dataSource = new UsersDataSource(this.adminService);
+    this.dataSource.loadUsers(this.role, '', 'asc', 1, 5);
+
+    this.dataSource.usersPagedResult$.subscribe(
+      result => {
+        if (result) {
+          this.collaborationPagedResult = result;
+          this.collaborationData = result.results;
+        }
+      }
     );
   }
 
-  /** 
-    *getUserListData method is used to get the collaboration data.
-    */
-  getUserListData(response) {
-    this.collaborationData = response;
-    this.dataSource = new MatTableDataSource<any>(this.collaborationData);
-    setTimeout(() => {
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-    }, 0);
+  ngAfterViewInit() {
+    // server-side search
+    fromEvent(this.input.nativeElement, 'keyup')
+      .pipe(
+        debounceTime(150),
+        distinctUntilChanged(),
+        tap(() => {
+          this.paginator.pageIndex = 0;
+          this.loadCustomersPage();
+        })
+      )
+      .subscribe();
 
-    this.isLoading = false;
+    // reset the paginator after sorting
+    this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
+
+    // on sort or paginate events, load a new page
+    merge(this.sort.sortChange, this.paginator.page)
+      .pipe(
+        tap(() => this.loadCustomersPage())
+      )
+      .subscribe();
+  }
+
+  loadCustomersPage() {
+    this.dataSource.loadUsers(
+      this.role,
+      this.input.nativeElement.value,
+      this.sort.direction,
+      this.paginator.pageIndex + 1,
+      this.paginator.pageSize);
   }
 
   /** 
@@ -248,30 +278,22 @@ export class CustomersComponent implements OnInit {
   }
 
   /** 
-     * addNewUserDialog method is used to open a add new client dialog.
+     * refresh the data table after a modification
      */
   refresh() {
-
-    this.adminService.getAllUsersByRole(this.role).subscribe(
-      res => {
-        this.getUserListData(res);
-        this.changeDetectorRefs.detectChanges();
-      },
-      error => {
-        console.log(error);
-      }
-    );
+    let details = this.collaborationPagedResult;
+    this.dataSource.loadUsers(this.role, details.filter, details.sortDirection, details.currentPage, details.pageSize);
   }
 
   /**
     * applyFilter function can be set which takes a data object and filter string and returns true if the data object is considered a match.
     */
   applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    // this.dataSource.filter = filterValue.trim().toLowerCase();
 
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+    // if (this.dataSource.paginator) {
+    //   this.dataSource.paginator.firstPage();
+    // }
   }
 
 }

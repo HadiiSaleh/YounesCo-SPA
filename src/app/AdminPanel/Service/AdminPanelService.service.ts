@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
 import 'rxjs/Rx';
 import * as screenfull from 'screenfull';
@@ -12,6 +12,7 @@ import { User } from '../Interfaces/User';
 import { environment } from 'src/environments/environment';
 import { shareReplay } from 'rxjs/operators';
 import { EditUserComponent } from '../Widget/PopUp/edit-user/edit-user.component';
+import { PagedUsers } from '../Interfaces/PagedUsers';
 
 @Injectable({
 	providedIn: 'root'
@@ -28,6 +29,7 @@ export class AdminPanelServiceService {
 	// Urls to access accounts Web API’s
 
 	private baseUrlGetAllUsersByRole: string = environment.apiUrl + "accounts/GetUsersByRole";
+	private baseUrlGetAllUsersPagedByRole: string = environment.apiUrl + "accounts/GetUsersByRolePaged";
 	private baseUrlGetAllUsers: string = environment.apiUrl + "accounts/GetAllUsers";
 	private baseUrlDeleteUserById: string = environment.apiUrl + "accounts/DeleteUserById";
 	private baseUrlUnDelteUserById: string = environment.apiUrl + "accounts/UnDelteUserById";
@@ -112,7 +114,7 @@ export class AdminPanelServiceService {
 		return this.http.get<User[]>(this.baseUrlGetAllUsersByRole + "/Moderator").pipe(shareReplay());
 	}
 
-	// API:Delete Users by role
+	// API:Get Users by role
 	getAllUsersByRole(role: string): Observable<User[]> {
 		switch (role) {
 			case "Admin":
@@ -124,6 +126,26 @@ export class AdminPanelServiceService {
 			default:
 				return this.http.get<User[]>(this.baseUrlGetAllUsersByRole + "/" + role).pipe(shareReplay());
 		}
+	}
+
+	// API:Get Users by role paged
+	getAllUsersPagedByRole(role: string, filter: string, sortDirection: string, pageNumber: number, pageSize: number): Observable<PagedUsers> {
+		// switch (role) {
+		// 	case "Admin":
+		// 		return this.http.get<User[]>(this.baseUrlGetAllUsersByRole + "/" + role).pipe(shareReplay());
+
+		// 	case "Moderator":
+		// 		return this.http.get<User[]>(this.baseUrlGetAllUsersByRole + "/" + role).pipe(shareReplay());
+
+		// 	default:
+		return this.http.get<PagedUsers>(this.baseUrlGetAllUsersPagedByRole + "/" + role, {
+			params: new HttpParams()
+				.set('filter', filter)
+				.set('sortDirection', sortDirection)
+				.set('pageNumber', pageNumber.toString())
+				.set('pageSize', pageSize.toString())
+		});
+		//}
 	}
 
 	// API:Delete User by id

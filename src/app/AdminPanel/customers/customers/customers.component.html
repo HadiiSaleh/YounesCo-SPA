@@ -3,7 +3,7 @@
    <div fxLayout="row wrap">
       <div fxFlex.gt-md="100" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
          <mat-form-field class="w-100">
-            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
+            <input matInput placeholder="Search"  #input>
          </mat-form-field>
       </div>
    </div>
@@ -19,35 +19,36 @@
          Add {{role}}
       </button>
    </div>
-   <div *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center">
-      <mat-progress-spinner color="primary" mode="indeterminate">
-      </mat-progress-spinner>
+   <div class="spinner-container" *ngIf="(dataSource.loading$ | async) && !collaborationPagedResult"
+      style="display: flex; justify-content: center; align-items: center">
+      <mat-spinner></mat-spinner>
    </div>
-   <ng-container *ngIf="collaborationData && collaborationData.length>0; else elseBlock">
+   <ng-container>
       <div class="table-responsive-x">
-         <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-100 table-scroll-wrap" matSort>
+         <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-100 table-scroll-wrap" matSort
+            matSortActive="createdAt" matSortDirection="asc" matSortDisableClear>
             <ng-container matColumnDef="id">
-               <th class="px-2" mat-header-cell *matHeaderCellDef mat-sort-header> Id </th>
+               <th class="px-2" mat-header-cell *matHeaderCellDef> Id </th>
                <td class="px-2" mat-cell *matCellDef="let element"> {{element.id}} </td>
             </ng-container>
             <ng-container matColumnDef="displayName">
-               <th class="px-2" mat-header-cell *matHeaderCellDef mat-sort-header> Full Name </th>
+               <th class="px-2" mat-header-cell *matHeaderCellDef> Full Name </th>
                <td class="px-2" mat-cell *matCellDef="let element"> {{element.displayName}} </td>
             </ng-container>
             <ng-container matColumnDef="userName">
-               <th class="px-2" mat-header-cell *matHeaderCellDef mat-sort-header> Username </th>
+               <th class="px-2" mat-header-cell *matHeaderCellDef> Username </th>
                <td class="px-2" mat-cell *matCellDef="let element"> {{element.userName}} </td>
             </ng-container>
             <ng-container matColumnDef="email">
-               <th class="px-2" mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+               <th class="px-2" mat-header-cell *matHeaderCellDef> Email </th>
                <td class="px-2" mat-cell *matCellDef="let element"> {{element.email}} </td>
             </ng-container>
             <ng-container matColumnDef="phoneNumber">
-               <th class="px-2" mat-header-cell *matHeaderCellDef mat-sort-header> Phone Number</th>
+               <th class="px-2" mat-header-cell *matHeaderCellDef> Phone Number</th>
                <td class="px-2" mat-cell *matCellDef="let element"> {{element.phoneNumber}} </td>
             </ng-container>
             <ng-container matColumnDef="location">
-               <th class="px-2" mat-header-cell *matHeaderCellDef mat-sort-header> Location </th>
+               <th class="px-2" mat-header-cell *matHeaderCellDef> Location </th>
                <td class="px-2" mat-cell *matCellDef="let element">
                   {{element.location.country}},{{element.location.city}},{{element.location.region}},{{element.location.street}},{{element.location.building}},{{element.location.floor}}
                </td>
@@ -58,7 +59,7 @@
                   {{element.createdAt | date: 'dd/MM/yyyy HH:mm:ss'}} </td>
             </ng-container>
             <ng-container matColumnDef="updatedAt">
-               <th class="px-2" mat-header-cell *matHeaderCellDef mat-sort-header> Updated at </th>
+               <th class="px-2" mat-header-cell *matHeaderCellDef> Updated at </th>
                <td class="px-2" mat-cell *matCellDef="let element">
                   {{element.updatedAt | date: 'dd/MM/yyyy HH:mm:ss'}} </td>
             </ng-container>
@@ -84,11 +85,11 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
          </table>
       </div>
-      <!-- product-list-tabel-->
-      <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
-      <!-- table-responsive-x -->
+
+      <mat-paginator [length]="collaborationPagedResult?.rowCount" [pageSize]="collaborationPagedResult?.pageSize"
+         [pageSizeOptions]="[5, 10, 25, 100]">
+      </mat-paginator>
+
    </ng-container>
-   <ng-template *ngIf="!isLoading" #elseBlock>
-      <h5 class="ml-5">No customer found</h5>
-   </ng-template>
+
 </mat-card>

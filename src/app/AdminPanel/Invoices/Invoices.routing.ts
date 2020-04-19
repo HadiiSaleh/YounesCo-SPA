@@ -3,7 +3,7 @@ import { InvoicesComponent } from './Invoices/Invoices.component';
 
 export const InvoicesRoutes: Routes = [
 	{
-		path      : '',
-		component : InvoicesComponent
+		path: '',
+		component: InvoicesComponent
 	}
 ];

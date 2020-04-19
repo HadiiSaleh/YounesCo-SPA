@@ -6,6 +6,7 @@ import { SessionRoutes } from './Session.routing';
 import { GlobalModule } from '../../Global/Global.module';
 import { TemplatesModule } from '../../Templates/Templates.module';
 
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatButtonModule, 
    MatCardModule, 
@@ -37,6 +38,7 @@ import { RegisterComponent } from './Register/Register.component';
 import { SignInComponent } from './SignIn/SignIn.component';
 import { ForgotPasswordComponent } from './ForgotPassword/ForgotPassword.component';
 import { ThankYouComponent } from './ThankYou/ThankYou.component';
+import { ResetPasswordComponent } from './ResetPassword/ResetPassword.component';
 
 @NgModule({
    imports: [
@@ -69,13 +71,16 @@ import { ThankYouComponent } from './ThankYou/ThankYou.component';
       MatGridListModule,
       GlobalModule,
       TemplatesModule,
-      NgAisModule
+      NgAisModule,
+      FormsModule,
+      ReactiveFormsModule
    ],
    declarations: [
       RegisterComponent,
       SignInComponent,
       ThankYouComponent,
-      ForgotPasswordComponent
+      ForgotPasswordComponent,
+      ResetPasswordComponent
    ]
 })
 export class SessionModule { }

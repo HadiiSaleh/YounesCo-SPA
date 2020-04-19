@@ -4,6 +4,7 @@
 
  export const environment = {
    production: false,
+   apiUrl: 'https://localhost:44364/api/',  
    firebase: {
 	apiKey: "AIzaSyC5kr77VEU-FnklR5DBn3bPwmtmpEjYde4",
 	authDomain: "embryo-version-2.firebaseapp.com",

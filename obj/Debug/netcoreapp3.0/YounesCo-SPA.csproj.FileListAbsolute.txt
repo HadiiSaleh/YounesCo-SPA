@@ -1,0 +1,12 @@
+d:\hadi\YounesCo\YounesCo-SPA\obj\Debug\netcoreapp3.0\YounesCo-SPA.csprojAssemblyReference.cache
+d:\hadi\YounesCo\YounesCo-SPA\obj\Debug\netcoreapp3.0\staticwebassets\YounesCo-SPA.StaticWebAssets.Manifest.cache
+d:\hadi\YounesCo\YounesCo-SPA\obj\Debug\netcoreapp3.0\staticwebassets\YounesCo-SPA.StaticWebAssets.xml
+d:\hadi\YounesCo\YounesCo-SPA\obj\Debug\netcoreapp3.0\YounesCo-SPA.MvcApplicationPartsAssemblyInfo.cache
+d:\hadi\YounesCo\YounesCo-SPA\obj\Debug\netcoreapp3.0\YounesCo-SPA.AssemblyInfoInputs.cache
+d:\hadi\YounesCo\YounesCo-SPA\obj\Debug\netcoreapp3.0\YounesCo-SPA.AssemblyInfo.cs
+C:\Users\pc\Desktop\YounesCo\YounesCo-SPA\obj\Debug\netcoreapp3.0\YounesCo-SPA.csprojAssemblyReference.cache
+C:\Users\pc\Desktop\YounesCo\YounesCo-SPA\obj\Debug\netcoreapp3.0\staticwebassets\YounesCo-SPA.StaticWebAssets.Manifest.cache
+C:\Users\pc\Desktop\YounesCo\YounesCo-SPA\obj\Debug\netcoreapp3.0\staticwebassets\YounesCo-SPA.StaticWebAssets.xml
+C:\Users\pc\Desktop\YounesCo\YounesCo-SPA\obj\Debug\netcoreapp3.0\YounesCo-SPA.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\pc\Desktop\YounesCo\YounesCo-SPA\obj\Debug\netcoreapp3.0\YounesCo-SPA.AssemblyInfoInputs.cache
+C:\Users\pc\Desktop\YounesCo\YounesCo-SPA\obj\Debug\netcoreapp3.0\YounesCo-SPA.AssemblyInfo.cs

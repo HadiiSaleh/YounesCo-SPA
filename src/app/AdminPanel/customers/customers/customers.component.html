@@ -1,0 +1,95 @@
+<!-- dash-title -->
+<mat-card>
+   <div fxLayout="row wrap">
+      <div fxFlex.gt-md="100" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+         <mat-form-field class="w-100">
+            <input matInput placeholder="Search"  #input>
+         </mat-form-field>
+      </div>
+   </div>
+   <!-- wrap -->
+</mat-card>
+<mat-card
+   *ngIf="((UserRole$ | async)=='Admin' || (UserRole$ | async)=='Moderator') && (LoginStatus$ | async) as LoginStatus">
+   <div class="dash-title mb-4 ml-3">
+      {{role}} List
+
+      <button matTooltip="Create new customer" matTooltipPosition="left" color="primary" mat-raised-button
+         (click)="addNewUserDialog()" style="float:right">
+         Add {{role}}
+      </button>
+   </div>
+   <div class="spinner-container" *ngIf="(dataSource.loading$ | async) && !collaborationPagedResult"
+      style="display: flex; justify-content: center; align-items: center">
+      <mat-spinner></mat-spinner>
+   </div>
+   <ng-container>
+      <div class="table-responsive-x">
+         <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-100 table-scroll-wrap" matSort
+            matSortActive="createdAt" matSortDirection="asc" matSortDisableClear>
+            <ng-container matColumnDef="id">
+               <th class="px-2" mat-header-cell *matHeaderCellDef> Id </th>
+               <td class="px-2" mat-cell *matCellDef="let element"> {{element.id}} </td>
+            </ng-container>
+            <ng-container matColumnDef="displayName">
+               <th class="px-2" mat-header-cell *matHeaderCellDef> Full Name </th>
+               <td class="px-2" mat-cell *matCellDef="let element"> {{element.displayName}} </td>
+            </ng-container>
+            <ng-container matColumnDef="userName">
+               <th class="px-2" mat-header-cell *matHeaderCellDef> Username </th>
+               <td class="px-2" mat-cell *matCellDef="let element"> {{element.userName}} </td>
+            </ng-container>
+            <ng-container matColumnDef="email">
+               <th class="px-2" mat-header-cell *matHeaderCellDef> Email </th>
+               <td class="px-2" mat-cell *matCellDef="let element"> {{element.email}} </td>
+            </ng-container>
+            <ng-container matColumnDef="phoneNumber">
+               <th class="px-2" mat-header-cell *matHeaderCellDef> Phone Number</th>
+               <td class="px-2" mat-cell *matCellDef="let element"> {{element.phoneNumber}} </td>
+            </ng-container>
+            <ng-container matColumnDef="location">
+               <th class="px-2" mat-header-cell *matHeaderCellDef> Location </th>
+               <td class="px-2" mat-cell *matCellDef="let element">
+                  {{element.location.country}},{{element.location.city}},{{element.location.region}},{{element.location.street}},{{element.location.building}},{{element.location.floor}}
+               </td>
+            </ng-container>
+            <ng-container matColumnDef="createdAt">
+               <th class="px-2" mat-header-cell *matHeaderCellDef mat-sort-header> Created at </th>
+               <td class="px-2" mat-cell *matCellDef="let element">
+                  {{element.createdAt | date: 'dd/MM/yyyy HH:mm:ss'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="updatedAt">
+               <th class="px-2" mat-header-cell *matHeaderCellDef> Updated at </th>
+               <td class="px-2" mat-cell *matCellDef="let element">
+                  {{element.updatedAt | date: 'dd/MM/yyyy HH:mm:ss'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="action">
+               <th class="px-2 text-nowrap" mat-header-cell *matHeaderCellDef style="text-align: center;"> Action </th>
+               <td class="px-2 text-nowrap" mat-cell *matCellDef="let element;let i = index;">
+                  <div>
+                     <button mat-icon-button matTooltip="Edit this customer" (click)="onEditDialog(i)" color="primary">
+                        <i class="material-icons">edit</i>
+                     </button>
+                     <button color="warn" matTooltip="Delete this customer" mat-icon-button (click)="onDeleteDialog(i)"
+                        *ngIf="(element.deleted==false)">
+                        <mat-icon class="">delete</mat-icon>
+                     </button>
+                     <button color="warn" matTooltip="Restor this customer from trash" mat-icon-button
+                        (click)="onUnDeleteDialog(i)" *ngIf="(element.deleted==true)">
+                        <mat-icon class="">restore_from_trash</mat-icon>
+                     </button>
+                  </div>
+               </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+         </table>
+      </div>
+
+      <mat-paginator [length]="collaborationPagedResult?.rowCount" [pageSize]="collaborationPagedResult?.pageSize"
+         [pageSizeOptions]="[5, 10, 25, 100]">
+      </mat-paginator>
+
+   </ng-container>
+
+</mat-card>

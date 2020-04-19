@@ -16,16 +16,22 @@ export interface Menu {
 
 const MENUITEMS = [
   {
-    state: 'admin-panel/reports',
-    name: 'Reports',
-    type: 'link',
-    icon: 'poll'
-  },
-  {
     state: 'admin-panel/invoices',
     name: 'Invoices',
     type: 'link',
     icon: 'recent_actors'
+  },
+  {
+    state: 'admin-panel/account/profile',
+    name: 'Profile',
+    type: 'link',
+    icon: 'account_circle'
+  },
+  {
+    state: 'admin-panel/customers',
+    name: 'Customers',
+    type: 'link',
+    icon: 'people'
   },
   {
     state: 'admin-panel',
@@ -33,15 +39,9 @@ const MENUITEMS = [
     type: 'sub',
     icon: 'shopping_cart',
     children: [
-      {state: 'products', name: 'Products',type : 'link'},
-      {state: 'product-add', name: 'Product Add',type : 'link'}
+      { state: 'products', name: 'Products', type: 'link' },
+      { state: 'product-add', name: 'Product Add', type: 'link' }
     ]
-  },
-  {
-    state: 'admin-panel/account/profile',
-    name: 'Profile',
-    type: 'link',
-    icon: 'account_circle'
   },
   {
     state: '/home',

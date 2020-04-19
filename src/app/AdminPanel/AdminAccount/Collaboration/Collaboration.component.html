@@ -1,41 +1,84 @@
+<!-- dash-title -->
 <mat-card>
-   <button color="primary" mat-raised-button (click)="addNewUserDialog()">
-      Add Users
-   </button>
+   <div fxLayout="row wrap">
+      <div fxFlex.gt-md="100" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+         <mat-form-field class="w-100">
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
+         </mat-form-field>
+      </div>
+   </div>
+   <!-- wrap -->
+</mat-card>
+<mat-card
+   *ngIf="((UserRole$ | async)=='Admin' || (UserRole$ | async)=='Moderator') && (LoginStatus$ | async) as LoginStatus">
+   <div class="dash-title mb-4 ml-3">
+      {{role}} List
+
+      <button matTooltip="Create new moderator" matTooltipPosition="left" color="primary" mat-raised-button
+         (click)="addNewUserDialog()" *ngIf="(UserRole$ | async)=='Admin'" style="float:right">
+         Add {{role}}
+      </button>
+   </div>
+   <div *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center">
+      <mat-progress-spinner color="primary" mode="indeterminate">
+      </mat-progress-spinner>
+   </div>
    <ng-container *ngIf="collaborationData && collaborationData.length>0; else elseBlock">
       <div class="table-responsive-x">
-         <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-100 table-scroll-wrap">
-            <ng-container matColumnDef="image">
-               <th class="px-3" mat-header-cell *matHeaderCellDef>Image</th>
-               <td class="px-3" mat-cell *matCellDef="let element"> <img src= {{element.image}} width="40" height="40"></td>
+         <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-100 table-scroll-wrap" matSort>
+            <ng-container matColumnDef="displayName">
+               <th class="px-2" mat-header-cell *matHeaderCellDef mat-sort-header> Full Name </th>
+               <td class="px-2" mat-cell *matCellDef="let element"> {{element.displayName}} </td>
             </ng-container>
-            <ng-container matColumnDef="name">
-               <th class="px-3" mat-header-cell *matHeaderCellDef> Name </th>
-               <td class="px-3" mat-cell *matCellDef="let element"> {{element.name}} </td>
+            <ng-container matColumnDef="userName">
+               <th class="px-2" mat-header-cell *matHeaderCellDef mat-sort-header> Username </th>
+               <td class="px-2" mat-cell *matCellDef="let element"> {{element.userName}} </td>
             </ng-container>
             <ng-container matColumnDef="email">
-               <th class="px-3" mat-header-cell *matHeaderCellDef> email </th>
-               <td class="px-3" mat-cell *matCellDef="let element"> {{element.email}} </td>
+               <th class="px-2" mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+               <td class="px-2" mat-cell *matCellDef="let element"> {{element.email}} </td>
             </ng-container>
-            <ng-container matColumnDef="access">
-               <th class="px-3" mat-header-cell *matHeaderCellDef> Access </th>
-               <td class="px-3" mat-cell *matCellDef="let element"> {{element.access}} </td>
+            <ng-container matColumnDef="phoneNumber">
+               <th class="px-2" mat-header-cell *matHeaderCellDef mat-sort-header> Phone Number</th>
+               <td class="px-2" mat-cell *matCellDef="let element"> {{element.phoneNumber}} </td>
+            </ng-container>
+            <ng-container matColumnDef="createdAt">
+               <th class="px-2" mat-header-cell *matHeaderCellDef mat-sort-header> Created at </th>
+               <td class="px-2" mat-cell *matCellDef="let element">
+                  {{element.createdAt | date: 'dd/MM/yyyy HH:mm:ss'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="updatedAt">
+               <th class="px-2" mat-header-cell *matHeaderCellDef mat-sort-header> Updated at </th>
+               <td class="px-2" mat-cell *matCellDef="let element">
+                  {{element.updatedAt | date: 'dd/MM/yyyy HH:mm:ss'}} </td>
             </ng-container>
             <ng-container matColumnDef="action">
-               <th class="px-3" mat-header-cell *matHeaderCellDef> Action </th>
-               <td class="px-3" mat-cell *matCellDef="let element;let i = index;">
-                  <button color="warn" mat-icon-button (click)="onDelete(i)">
-                     <mat-icon class="">delete</mat-icon>
-                  </button>
+               <th class="px-2 text-nowrap" mat-header-cell *matHeaderCellDef style="text-align: center;"> Action </th>
+               <td class="px-2 text-nowrap" mat-cell *matCellDef="let element;let i = index;">
+                  <div *ngIf="((UserRole$ | async)=='Admin') && (LoginStatus$ | async) as LoginStatus">
+                     <button mat-icon-button matTooltip="Edit this moderator" (click)="onEditDialog(i)" color="primary">
+                        <i class="material-icons">edit</i>
+                     </button>
+                     <button color="warn" matTooltip="Delete this moderator" mat-icon-button (click)="onDeleteDialog(i)"
+                        *ngIf="(element.deleted==false)">
+                        <mat-icon class="">delete</mat-icon>
+                     </button>
+                     <button color="warn" matTooltip="Restor this moderator from trash" mat-icon-button
+                        (click)="onUnDeleteDialog(i)" *ngIf="(element.deleted==true)">
+                        <mat-icon class="">restore_from_trash</mat-icon>
+                     </button>
+                  </div>
                </td>
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
          </table>
-      </div>  
+      </div>
+      <!-- product-list-tabel-->
+      <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
       <!-- table-responsive-x -->
    </ng-container>
-   <ng-template #elseBlock>
-      <h5 class="ml-5">No user found</h5>
+   <ng-template *ngIf="!isLoading" #elseBlock>
+      <h5 class="ml-5">No moderator found</h5>
    </ng-template>
 </mat-card>

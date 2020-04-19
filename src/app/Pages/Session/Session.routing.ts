@@ -4,20 +4,21 @@ import { RegisterComponent } from './Register/Register.component';
 import { SignInComponent } from './SignIn/SignIn.component';
 import { ForgotPasswordComponent } from './ForgotPassword/ForgotPassword.component';
 import { ThankYouComponent } from './ThankYou/ThankYou.component';
+import { ResetPasswordComponent } from './ResetPassword/ResetPassword.component';
 
-export const SessionRoutes : Routes = [
-	{ 
-		path: '', 
-		component: SignInComponent 
-	},
-   { 
-      path: 'signin', 
-      component: SignInComponent 
+export const SessionRoutes: Routes = [
+   {
+      path: '',
+      component: SignInComponent
    },
-	{
-		path: 'signup',
-		component: RegisterComponent
-	},
+   {
+      path: 'signin',
+      component: SignInComponent
+   },
+   {
+      path: 'signup',
+      component: RegisterComponent
+   },
    {
       path: 'thank-you',
       component: ThankYouComponent
@@ -25,5 +26,9 @@ export const SessionRoutes : Routes = [
    {
       path: 'forgot-password',
       component: ForgotPasswordComponent
+   },
+   {
+      path: 'reset-password',
+      component: ResetPasswordComponent
    }
 ]

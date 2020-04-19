@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable ,  BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { MatDialogRef, MatDialog, MatDialogConfig, MatSidenav } from '@angular/material';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from "@angular/fire/database";
 import { ToastaService, ToastaConfig, ToastOptions, ToastData } from 'ngx-toasta';
@@ -8,40 +8,41 @@ import 'rxjs/Rx';
 
 import { ReviewPopupComponent } from '../Global/ReviewPopup/ReviewPopup.component';
 import { ConfirmationPopupComponent } from '../Global/ConfirmationPopup/ConfirmationPopup.component';
+import { OkPopupComponent } from '../Global/ok-popup/ok-popup.component';
 
 interface Response {
-  data     : any;
+   data: any;
 }
 
 @Injectable()
 export class EmbryoService {
 
-   sidenavOpen                 : boolean = false;
-   paymentSidenavOpen          : boolean = false;
-   isDirectionRtl              : boolean = false;
-   featuredProductsSelectedTab : any = 0;
-   newArrivalSelectedTab       : any = 0;
-   
+   sidenavOpen: boolean = false;
+   paymentSidenavOpen: boolean = false;
+   isDirectionRtl: boolean = false;
+   featuredProductsSelectedTab: any = 0;
+   newArrivalSelectedTab: any = 0;
+
    /**** Get currency code:- https://en.wikipedia.org/wiki/ISO_4217 *****/
-   currency  : string = 'USD';
-   language  : string = 'en';     
+   currency: string = 'USD';
+   language: string = 'en';
 
-   shipping  : number = 12.95;
-   tax       : number = 27.95;
+   shipping: number = 12.95;
+   tax: number = 27.95;
 
-   products  : AngularFireObject<any>;
+   products: AngularFireObject<any>;
 
-   localStorageCartProducts : any;
-   localStorageWishlist : any;
-   navbarCartCount : number = 0;
+   localStorageCartProducts: any;
+   localStorageWishlist: any;
+   navbarCartCount: number = 0;
    navbarWishlistProdCount = 0;
-   buyUserCartProducts : any;
-   
-   constructor(private http:HttpClient, 
-               private dialog: MatDialog, 
-               private db: AngularFireDatabase,
-               private toastyService: ToastaService,
-               private toastyConfig: ToastaConfig) { 
+   buyUserCartProducts: any;
+
+   constructor(private http: HttpClient,
+      private dialog: MatDialog,
+      private db: AngularFireDatabase,
+      private toastyService: ToastaService,
+      private toastyConfig: ToastaConfig) {
 
       this.toastyConfig.position = "top-right";
       this.toastyConfig.theme = "material";
@@ -49,15 +50,15 @@ export class EmbryoService {
       localStorage.removeItem("user");
       localStorage.removeItem("byProductDetails");
 
-      this.db.object("products").valueChanges().subscribe(res => {this.setCartItemDefaultValue(res['gadgets'][1])});
+      this.db.object("products").valueChanges().subscribe(res => { this.setCartItemDefaultValue(res['gadgets'][1]) });
    }
 
    public setCartItemDefaultValue(setCartItemDefaultValue) {
-      let products : any;
+      let products: any;
       products = JSON.parse(localStorage.getItem("cart_item")) || [];
       let found = products.some(function (el, index) {
-         if(el.name == setCartItemDefaultValue.name){
-            return  true;
+         if (el.name == setCartItemDefaultValue.name) {
+            return true;
          }
       });
       if (!found) { products.push(setCartItemDefaultValue); }
@@ -66,11 +67,10 @@ export class EmbryoService {
       this.calculateLocalCartProdCounts();
    }
 
-   public reviewPopup(singleProductDetails, reviews)
-   {
+   public reviewPopup(singleProductDetails, reviews) {
       let review: MatDialogRef<ReviewPopupComponent>;
       const dialogConfig = new MatDialogConfig();
-      if(this.isDirectionRtl) {
+      if (this.isDirectionRtl) {
          dialogConfig.direction = 'rtl';
       } else {
          dialogConfig.direction = 'ltr';
@@ -83,8 +83,7 @@ export class EmbryoService {
       return review.afterClosed();
    }
 
-   public confirmationPopup(message:string)
-   {
+   public confirmationPopup(message: string) {
       let confirmationPopup: MatDialogRef<ConfirmationPopupComponent>;
       confirmationPopup = this.dialog.open(ConfirmationPopupComponent);
       confirmationPopup.componentInstance.message = message;
@@ -102,10 +101,10 @@ export class EmbryoService {
    */
 
    // Adding new Product to cart in localStorage
-   public addToCart(data: any, type:any=""){
-      let products : any;
+   public addToCart(data: any, type: any = "") {
+      let products: any;
       products = JSON.parse(localStorage.getItem("cart_item")) || [];
-      let productsLength = products.length; 
+      let productsLength = products.length;
 
       let toastOption: ToastOptions = {
          title: "Adding Product To Cart",
@@ -116,20 +115,20 @@ export class EmbryoService {
       };
 
       let found = products.some(function (el, index) {
-         if(el.name == data.name){
-            if(!data.quantity) { data.quantity = 1}
+         if (el.name == data.name) {
+            if (!data.quantity) { data.quantity = 1 }
             products[index]['quantity'] = data.quantity;
-            return  true;
+            return true;
          }
       });
       if (!found) { products.push(data); }
 
-      if(productsLength == products.length) {
+      if (productsLength == products.length) {
          toastOption.title = "Product Already Added";
          toastOption.msg = "You have already added this product to cart list";
       }
 
-      if(type == 'wishlist'){
+      if (type == 'wishlist') {
          this.removeLocalWishlistProduct(data);
       }
 
@@ -140,15 +139,15 @@ export class EmbryoService {
       }, 500);
    }
 
-   public buyNow(data:any) {
-      let products : any;
+   public buyNow(data: any) {
+      let products: any;
       products = JSON.parse(localStorage.getItem("cart_item")) || [];
 
       let found = products.some(function (el, index) {
-         if(el.name == data.name){
-            if(!data.quantity) { data.quantity = 1}
+         if (el.name == data.name) {
+            if (!data.quantity) { data.quantity = 1 }
             products[index]['quantity'] = data.quantity;
-            return  true;
+            return true;
          }
       });
       if (!found) { products.push(data); }
@@ -157,7 +156,7 @@ export class EmbryoService {
       this.calculateLocalCartProdCounts();
    }
 
-   public updateAllLocalCartProduct(products:any) {
+   public updateAllLocalCartProduct(products: any) {
       localStorage.removeItem('cart_item');
 
       localStorage.setItem("cart_item", JSON.stringify(products))
@@ -176,8 +175,8 @@ export class EmbryoService {
 
       for (let i = 0; i < products.length; i++) {
          if (products[i].id === product.id) {
-           products.splice(i, 1);
-           break;
+            products.splice(i, 1);
+            break;
          }
       }
 
@@ -202,7 +201,7 @@ export class EmbryoService {
    */
 
    // Adding new Product to Wishlist in localStorage
-   public addToWishlist(data: any){
+   public addToWishlist(data: any) {
       let toastOption: ToastOptions = {
          title: "Adding Product To Wishlist",
          msg: "Product adding to the wishlist",
@@ -211,20 +210,20 @@ export class EmbryoService {
          theme: "material"
       };
 
-      let products : any;
+      let products: any;
       products = JSON.parse(localStorage.getItem("wishlist_item")) || [];
       let productsLength = products.length;
 
       let found = products.some(function (el, index) {
-         if(el.name == data.name){
-            if(!data.quantity) { data.quantity = 1}
+         if (el.name == data.name) {
+            if (!data.quantity) { data.quantity = 1 }
             products[index]['quantity'] = data.quantity;
-            return  true;
+            return true;
          }
       });
       if (!found) { products.push(data); }
 
-      if(productsLength == products.length) {
+      if (productsLength == products.length) {
          toastOption.title = "Product Already Added";
          toastOption.msg = "You have already added this product to wishlist";
       }
@@ -234,7 +233,7 @@ export class EmbryoService {
          localStorage.setItem("wishlist_item", JSON.stringify(products));
          this.calculateLocalWishlistProdCounts();
       }, 500);
-      
+
    }
 
    // returning LocalWishlist Product Count
@@ -251,8 +250,8 @@ export class EmbryoService {
 
       for (let i = 0; i < products.length; i++) {
          if (products[i].productId === product.productId) {
-           products.splice(i, 1);
-           break;
+            products.splice(i, 1);
+            break;
          }
       }
 
@@ -271,14 +270,14 @@ export class EmbryoService {
          localStorage.setItem("wishlist_item", JSON.stringify(products));
          this.calculateLocalWishlistProdCounts();
       }, 500);
-      
+
    }
 
-   public addAllWishListToCart(dataArray:any) {
-      let a : any;
+   public addAllWishListToCart(dataArray: any) {
+      let a: any;
       a = JSON.parse(localStorage.getItem("cart_item")) || [];
 
-      for(let singleData of dataArray) {
+      for (let singleData of dataArray) {
          a.push(singleData);
       }
 
@@ -299,13 +298,12 @@ export class EmbryoService {
       }, 500);
 
    }
-  
+
    /**
     * getBlogList used to get the blog list. 
     */
-   public getBlogList()
-   {
-      let blogs : any;
+   public getBlogList() {
+      let blogs: any;
       blogs = this.db.list("blogs");
       return blogs;
    }
@@ -313,9 +311,8 @@ export class EmbryoService {
    /**
     * getContactInfo used to get the contact infomation. 
     */
-   public getContactInfo()
-   {
-      let contact : any;
+   public getContactInfo() {
+      let contact: any;
       contact = this.db.object("contact");
       return contact;
    }
@@ -323,9 +320,8 @@ export class EmbryoService {
    /**
     * getTermCondition used to get the term and condition. 
     */
-   public getTermCondition()
-   {
-      let termCondition : any;
+   public getTermCondition() {
+      let termCondition: any;
       termCondition = this.db.list("term_condition");
       return termCondition;
    }
@@ -333,9 +329,8 @@ export class EmbryoService {
    /**
     * getPrivacyPolicy used to get the privacy policy.
     */
-   public getPrivacyPolicy()
-   {
-      let privacyPolicy : any;
+   public getPrivacyPolicy() {
+      let privacyPolicy: any;
       privacyPolicy = this.db.list("privacy_policy");
       return privacyPolicy;
    }
@@ -343,9 +338,8 @@ export class EmbryoService {
    /**
     * getFaq used to get the faq.
     */
-   public getFaq()
-   {
-      let faq : any;
+   public getFaq() {
+      let faq: any;
       faq = this.db.object("faq");
       return faq;
    }
@@ -353,9 +347,8 @@ export class EmbryoService {
    /**
     * getProductReviews used to get the product review.
     */
-   public getProductReviews()
-   {
-      let review : any;
+   public getProductReviews() {
+      let review: any;
       review = this.db.list("product_reviews");
       return review;
    }
@@ -365,7 +358,7 @@ export class EmbryoService {
     */
    public addBuyUserDetails(formdata) {
       localStorage.setItem("user", JSON.stringify(formdata));
-      
+
       let product = JSON.parse(localStorage.getItem("cart_item"))
       localStorage.setItem("byProductDetails", JSON.stringify(product));
       this.buyUserCartProducts = JSON.parse(localStorage.getItem("byProductDetails"))
@@ -382,9 +375,8 @@ export class EmbryoService {
    /**
     * getTeam used to get the team data.
     */
-   public getTeam()
-   {
-      let team : any;
+   public getTeam() {
+      let team: any;
       team = this.db.list("team");
       return team;
    }
@@ -393,7 +385,7 @@ export class EmbryoService {
     * getTestimonial used to get the testimonial data.
     */
    public getTestimonial() {
-      let testimonial : any;
+      let testimonial: any;
       testimonial = this.db.object("testimonial");
       return testimonial;
    }
@@ -402,7 +394,7 @@ export class EmbryoService {
     * getMissionVision used to get the Mission and Vision data.
     */
    public getMissionVision() {
-      let mission_vision : any;
+      let mission_vision: any;
       mission_vision = this.db.list("mission_vision");
       return mission_vision;
    }
@@ -411,9 +403,35 @@ export class EmbryoService {
     * getAboutInfo used to get the about info data.
     */
    public getAboutInfo() {
-      let about_info : any;
+      let about_info: any;
       about_info = this.db.object("about_info");
       return about_info;
+   }
+
+   //Added Services
+   public OkPopup(messages: string[]) {
+      let okPopupComponent: MatDialogRef<OkPopupComponent>;
+      okPopupComponent = this.dialog.open(OkPopupComponent);
+      okPopupComponent.componentInstance.messages = messages;
+
+      return okPopupComponent.afterClosed();
+   }
+
+   public loadingToasty() {
+      let toastOption: ToastOptions = {
+         title: "Loading",
+         msg: "Please Wait...",
+         showClose: true,
+         timeout: 100000000,
+         theme: "material"
+      };
+
+      this.toastyService.wait(toastOption);
+   }
+
+   public closeToasty() {
+
+      this.toastyService.clearAll();
    }
 
 }

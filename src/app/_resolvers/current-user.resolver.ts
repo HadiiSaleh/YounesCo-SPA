@@ -7,43 +7,39 @@ import { User } from '../AdminPanel/Interfaces/User';
 import { ToastaService, ToastOptions } from 'ngx-toasta';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
-
 export class CurrentUserResover implements Resolve<any> {
+  constructor(
+    private accountService: AccountService,
+    private toastyService: ToastaService,
+    private router: Router
+  ) {}
 
-    constructor(private accountService: AccountService, private toastyService: ToastaService, private router: Router) {
+  private curentUsername: string;
 
-    }
+  private toastOption: ToastOptions = {
+    title: 'Account Information',
+    msg: 'Problem retriving data!',
+    showClose: true,
+    timeout: 3000,
+    theme: 'material',
+  };
 
-    private curentUsername: string;
+  private returnUrl = '/admin-panel';
 
-    private toastOption: ToastOptions = {
-        title: "Account Information",
-        msg: "Problem retriving data!",
-        showClose: true,
-        timeout: 3000,
-        theme: "material"
-    };
+  resolve(route: ActivatedRouteSnapshot): Observable<User> {
+    this.accountService.currentUserName.subscribe((result) => {
+      this.curentUsername = result;
+    });
 
-    private returnUrl = '/admin-panel';
-
-    resolve(route: ActivatedRouteSnapshot): Observable<User> {
-
-        this.accountService.currentUserName.subscribe(result => {
-            this.curentUsername = result
+    return this.accountService.getUserByUserName(this.curentUsername).pipe(
+      catchError((error) => {
+        this.router.navigate([this.returnUrl]).then(() => {
+          this.toastyService.error(this.toastOption);
         });
-
-        return this.accountService.getUserByUserName(this.curentUsername)
-            .pipe(
-                catchError(error => {
-                    this.router.navigate([this.returnUrl]).then(() => {
-                        this.toastyService.error(this.toastOption);
-                    });
-                    return of(null);
-                })
-            );
-
-    }
-
+        return of(null);
+      })
+    );
+  }
 }

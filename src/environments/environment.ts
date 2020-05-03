@@ -2,18 +2,18 @@
 // `ng build ---prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
- export const environment = {
-   production: false,
-   apiUrl: 'https://localhost:44364/api/',  
-   firebase: {
-	apiKey: "AIzaSyC5kr77VEU-FnklR5DBn3bPwmtmpEjYde4",
-	authDomain: "embryo-version-2.firebaseapp.com",
-	 databaseURL: "https://embryo-version-2.firebaseio.com",
-	 projectId: "embryo-version-2",
-	 storageBucket: "embryo-version-2.appspot.com",
-	 messagingSenderId: "73552048992"
-   }
- };
+export const environment = {
+  production: false,
+  apiUrl: 'https://localhost:44364/api/',
+  firebase: {
+    apiKey: 'AIzaSyC5kr77VEU-FnklR5DBn3bPwmtmpEjYde4',
+    authDomain: 'embryo-version-2.firebaseapp.com',
+    databaseURL: 'https://embryo-version-2.firebaseio.com',
+    projectId: 'embryo-version-2',
+    storageBucket: 'embryo-version-2.appspot.com',
+    messagingSenderId: '73552048992',
+  },
+};
 
 /*
  * In development mode, to ignore zone related error stack frames such as

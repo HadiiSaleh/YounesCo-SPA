@@ -1,1 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+
+.noUi-connect {
+    background: #ff5722 !important;
+}
+
+.noUi-tooltip {
+    display: none !important;
+}
+.noUi-active .noUi-tooltip {
+    display: block !important;
+}
+
+.page-size-selection {
+    display: none;
+}

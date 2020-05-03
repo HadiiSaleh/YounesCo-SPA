@@ -1,0 +1,31 @@
+[
+{
+    "categoryId":1,
+    "categoryName":"Power Banks",
+    "categorySlug": "power-banks",
+    "deleted": "false"
+},
+
+{
+    "categoryId":2,
+    "categoryName":"Earphones",
+    "categorySlug": "earphones",
+    "deleted": "false"
+},
+
+
+{
+    "categoryId":3,
+    "categoryName":"Masks",
+    "categorySlug": "masks",
+    "deleted": "false"
+},
+
+{
+    "categoryId":4,
+    "categoryName":"Hand Sanitizer",
+    "categorySlug": "hand-sanitizer",
+    "deleted": "false"
+}
+
+]

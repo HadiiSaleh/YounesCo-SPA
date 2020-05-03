@@ -1,4 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, Title } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
@@ -28,8 +28,10 @@ import {
    MatSliderModule,
    MatRadioModule,
    MatDialogModule,
-   MatGridListModule
+   MatGridListModule,
+   MatTreeModule
 } from '@angular/material';
+
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
 import { LoadingBarModule } from '@ngx-loading-bar/core';
@@ -75,6 +77,8 @@ import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { AdminPanelModule } from './AdminPanel/admin-panel.module';
 import { JwtInterceptor } from './_helper/jwt.Interceptor';
 import { CurrentUserResover } from './_resolvers/current-user.resolver';
+import { NouisliderModule } from 'ng2-nouislider';
+import { ProductsListResover } from './_resolvers/products-list.resolver';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
    suppressScrollX: true
@@ -102,7 +106,7 @@ export function createTranslateLoader(http: HttpClient) {
       FooterTwoComponent,
       HomeThreeComponent,
       HeaderThreeComponent,
-      FixedHeaderComponent
+      FixedHeaderComponent,
    ],
    imports: [
       BrowserModule.withServerTransition({ appId: 'embryo-seo-pre' }),
@@ -127,6 +131,7 @@ export function createTranslateLoader(http: HttpClient) {
       MatTooltipModule,
       MatChipsModule,
       MatListModule,
+      MatTreeModule,
       MatSidenavModule,
       MatTabsModule,
       MatProgressBarModule,
@@ -155,11 +160,13 @@ export function createTranslateLoader(http: HttpClient) {
       SlickCarouselModule,
       PerfectScrollbarModule,
       DeviceDetectorModule.forRoot(),
-      AdminPanelModule
+      AdminPanelModule,
+      NouisliderModule,
    ],
    providers: [
       MenuItems,
       EmbryoService,
+      Title,
       {
          provide: PERFECT_SCROLLBAR_CONFIG,
          useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
@@ -169,7 +176,8 @@ export function createTranslateLoader(http: HttpClient) {
          useClass: JwtInterceptor,
          multi: true
       },
-      CurrentUserResover
+      CurrentUserResover,
+      ProductsListResover
    ],
    exports: [
       RouterModule,

@@ -9,11 +9,14 @@ import { HomeThreeComponent } from './Pages/Home/HomeThree/HomeThree.component';
 import { CartComponent } from './Pages/Cart/Cart.component';
 import { NotFoundComponent } from './Pages/NotFound/NotFound.component';
 
+const subPageTitle = ' - Page';
+
 export const AppRoutes : Routes = [
    {
       path : '',
       redirectTo: 'home',
       pathMatch: 'full',
+      data: {title: 'Home' + subPageTitle}
    },
    {
       path : '',
@@ -21,27 +24,30 @@ export const AppRoutes : Routes = [
       children: [ 
          {
             path : 'home',
-            component : HomeoneComponent
+            component : HomeoneComponent,
+            data: {title: 'Home' + subPageTitle}
          },
-         {
-            path : 'home-two',
-            component : HomeTwoComponent
-         },
-         {
-            path : 'home-three',
-            component : HomeThreeComponent
-         },
+         // {
+         //    path : 'home-two',
+         //    component : HomeTwoComponent
+         // },
+         // {
+         //    path : 'home-three',
+         //    component : HomeThreeComponent
+         // },
          {
             path: 'products',loadChildren: ()=>
             import('./Pages/Products/Products.module').then (m => m.ProductsModule)
          },
          {
             path: 'cart',
-            component: CartComponent
+            component: CartComponent,
+            data: {title: 'Cart' + subPageTitle}
          },
          {
           path: 'not-found',
-          component: NotFoundComponent
+          component: NotFoundComponent,
+          data: {title: '404 - Not Found'}
          },
          {
             path: 'session',loadChildren: ()=>

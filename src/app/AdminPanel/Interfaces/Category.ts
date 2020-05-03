@@ -1,10 +1,12 @@
-import { Product } from "./Product";
+import { Product } from './Product';
 
 export interface Category {
-    categoryId?: number;
-    categoryName: string;
-    createdAt?: Date;
-    updatedAt?: Date;
-    deleted: boolean;
-    products?: Product[];
+  categoryId: number;
+  categoryName: string;
+  categorySlug: string;
+  isSelected?: boolean;
+  deleted?: boolean;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  products?: Product[];
 }

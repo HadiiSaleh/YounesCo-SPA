@@ -5,26 +5,31 @@ import { FaqComponent } from './Faq/Faq.component';
 import { TermAndConditionComponent } from './TermAndCondition/TermAndCondition.component';
 import { PrivacyPolicyComponent } from './PrivacyPolicy/PrivacyPolicy.component';
 
-
-export const AboutRoutes : Routes = [
-	{ 
-		path: 'about', 
-		component: AboutUsComponent 
-	},
-	{
-		path: 'contact',
-		component: ContactComponent
-	},
-   {
-      path: 'faq',
-      component: FaqComponent
-   },
-   {
-      path:'term-condition',
-      component: TermAndConditionComponent
-   },
-   {
-      path:'privacy-policy',
-      component: PrivacyPolicyComponent
-   }
-]
+const subPageTitle = ' - Page';
+export const AboutRoutes: Routes = [
+  {
+    path: 'about',
+    component: AboutUsComponent,
+    data: { title: 'About Us' + subPageTitle },
+  },
+  {
+    path: 'contact',
+    component: ContactComponent,
+    data: { title: 'Contact Us' + subPageTitle },
+  },
+  {
+    path: 'faq',
+    component: FaqComponent,
+    data: { title: 'FAQ' + subPageTitle },
+  },
+  {
+    path: 'term-condition',
+    component: TermAndConditionComponent,
+    data: { title: 'Terms & Conditions' + subPageTitle },
+  },
+  {
+    path: 'privacy-policy',
+    component: PrivacyPolicyComponent,
+    data: { title: 'Privacy Policy' + subPageTitle },
+  },
+];

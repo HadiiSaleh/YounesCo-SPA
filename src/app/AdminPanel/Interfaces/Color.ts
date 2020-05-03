@@ -3,14 +3,13 @@ import { Product } from "./Product";
 import { Image } from "./Image";
 
 export interface Color {
-    colorId?: number;
-    productId: number;
-    product: Product;
+    colorId: number;
+    // product: Product;
     colorName: string;
     colorCode: string;
+    deleted: boolean;
     createdAt?: Date;
     updatedAt?: Date;
-    deleted: boolean;
     images?: Image[];
     orderItems?: OrderItem[];
 }

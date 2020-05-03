@@ -1,9 +1,16 @@
 import { Component, OnInit, HostBinding, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
 import { TranslateService } from '@ngx-translate/core';
 
 import { MenuItems } from '../../../Core/menu/menu-items/menu-items';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'embryo-Menu',
@@ -11,33 +18,36 @@ import { MenuItems } from '../../../Core/menu/menu-items/menu-items';
   styleUrls: ['./Menu.component.scss'],
   animations: [
     trigger('indicatorRotate', [
-      state('collapsed', style({transform: 'rotate(0deg)'})),
-      state('expanded', style({transform: 'rotate(180deg)'})),
-      transition('expanded <=> collapsed',
+      state('collapsed', style({ transform: 'rotate(0deg)' })),
+      state('expanded', style({ transform: 'rotate(180deg)' })),
+      transition(
+        'expanded <=> collapsed',
         animate('225ms cubic-bezier(0.4,0.0,0.2,1)')
       ),
-    ])
-  ]
+    ]),
+  ],
 })
 export class MenuComponent implements OnInit {
+  expanded: boolean;
 
-   expanded       : boolean;
+  constructor(
+    public menuItems: MenuItems,
+    public router: Router,
+    public translate: TranslateService,
+    private titleService: Title
+  ) {}
 
-   constructor(public menuItems: MenuItems,public router: Router, public translate: TranslateService) {
-   }
+  ngOnInit() {}
 
-   ngOnInit() {
-   }
+  public onItemSelected(item: any) {
+    if (item.children && item.children.length) {
+      this.expanded = !this.expanded;
+    }
+  }
 
-   public onItemSelected(item: any) {
-      if (item.children && item.children.length) {
-         this.expanded = !this.expanded;
-      }
-   }
-
-
-   public redirectTo(subchildState){
-      this.router.navigate([subchildState.state],{ queryParams:{ category: subchildState.queryState }});
-   }
-
+  public redirectTo(subchildState) {
+    this.router.navigate([subchildState.state], {
+      queryParams: { type: subchildState.queryState },
+    });
+  }
 }

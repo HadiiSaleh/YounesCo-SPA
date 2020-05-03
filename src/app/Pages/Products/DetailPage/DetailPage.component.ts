@@ -24,7 +24,7 @@ export class DetailPageComponent implements OnInit {
    ngOnInit() {
       this.route.params.subscribe(res => {
          this.id = res.id;
-         this.type = res.type;
+         this.type = res.category;
          this.getData();
       })
    }

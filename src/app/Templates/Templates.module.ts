@@ -35,6 +35,7 @@ import { Grid3Component } from './Grid/Grid3/Grid3.component';
 import { ReviewComponent } from './Review/Review.component';
 import { ShopDetailsComponent } from './ShopDetails/ShopDetails.component';
 import { TruncatePipe } from './Grid/ProductGrid/truncate.pipe';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -68,6 +69,7 @@ import { TruncatePipe } from './Grid/ProductGrid/truncate.pipe';
     MatDialogModule,
     MatGridListModule,
     GlobalModule,
+    FormsModule
   ],
   declarations: [
     ProductGridComponent,

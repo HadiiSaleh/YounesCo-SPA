@@ -5,14 +5,11 @@ import { catchError } from 'rxjs/operators';
 import { Product } from '../AdminPanel/Interfaces/Product';
 import { ProductsService } from '../Services/products.service';
 import { ToastOptions, ToastaService } from 'ngx-toasta';
-import { PaginationResult } from '../AdminPanel/Interfaces/PaginationResult';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ProductsListResover implements Resolve<PaginationResult<Product[]>> {
-  pageNumber = 1;
-  pageSize = 12;
+export class ProductsDetialsResover implements Resolve<Product> {
 
   constructor(
     private productsService: ProductsService,
@@ -22,17 +19,17 @@ export class ProductsListResover implements Resolve<PaginationResult<Product[]>>
 
 
 
-  resolve(route: ActivatedRouteSnapshot): Observable<PaginationResult<Product[]>> {
+  resolve(route: ActivatedRouteSnapshot): Observable<Product> {
     return this.productsService
-      .getAllProducts(this.pageNumber, this.pageSize, null)
+      .getProductById(route.params.id)
       .pipe(
         catchError(error => {
-          this.router.navigate(['/home']).then(() => {
+          this.router.navigate(['/products']).then(() => {
             this.toastyService.error({
               title: 'Error',
               msg: error,
               showClose: true,
-              timeout: 10000,
+              timeout: 3000,
               theme: 'material',
             });
           });

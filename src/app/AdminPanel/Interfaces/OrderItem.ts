@@ -1,17 +1,12 @@
-import { Product } from "./Product";
-import { Order } from "./Order";
-import { Color } from "./Color";
+import { Product } from './Product';
 
 export interface OrderItem {
-    orderItemId: number;
-    productId: number;
-    product: Product;
-    order: Order;
-    orderId: number;
-    quantity: number;
-    colorName: string;
-    unitPrice: number;
-    totalPrice: number;
-    colorId: number;
-    color: Color;
+  orderItemId?: number;
+  productId?: number;
+  product?: Product;
+  orderId?: number;
+  quantity?: number;
+  colorName?: string;
+  unitPrice?: number;
+  totalPrice?: number;
 }

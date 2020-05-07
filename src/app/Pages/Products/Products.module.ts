@@ -42,6 +42,7 @@ import {
 
 import { ProductsListResover } from 'src/app/_resolvers/products-list.resolver';
 import { NgxPaginateModule } from 'ngx-paginate';
+import { JwtInterceptorProvider } from 'src/app/_helper/jwt.Interceptor';
 
 
 @NgModule({

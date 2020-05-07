@@ -75,10 +75,11 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { AdminPanelModule } from './AdminPanel/admin-panel.module';
-import { JwtInterceptor } from './_helper/jwt.Interceptor';
+import { JwtInterceptorProvider } from './_helper/jwt.Interceptor';
 import { CurrentUserResover } from './_resolvers/current-user.resolver';
 import { NouisliderModule } from 'ng2-nouislider';
 import { ProductsListResover } from './_resolvers/products-list.resolver';
+import { ProductsDetialsResover } from './_resolvers/product-details.resolver';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
    suppressScrollX: true
@@ -164,6 +165,7 @@ export function createTranslateLoader(http: HttpClient) {
       NouisliderModule,
    ],
    providers: [
+      JwtInterceptorProvider,
       MenuItems,
       EmbryoService,
       Title,
@@ -171,13 +173,9 @@ export function createTranslateLoader(http: HttpClient) {
          provide: PERFECT_SCROLLBAR_CONFIG,
          useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
       },
-      {
-         provide: HTTP_INTERCEPTORS,
-         useClass: JwtInterceptor,
-         multi: true
-      },
       CurrentUserResover,
-      ProductsListResover
+      ProductsListResover,
+      ProductsDetialsResover
    ],
    exports: [
       RouterModule,

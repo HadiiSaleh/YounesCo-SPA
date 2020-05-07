@@ -1,45 +1,44 @@
-import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnChanges,
+  Input,
+  Output,
+  EventEmitter,
+} from '@angular/core';
+import { OrderItem } from 'src/app/AdminPanel/Interfaces/OrderItem';
+import { ProductsService } from 'src/app/Services/products.service';
+import { Product } from 'src/app/AdminPanel/Interfaces/Product';
 
 @Component({
-   selector: 'embryo-HeaderCart',
-   templateUrl: './HeaderCart.component.html',
-   styleUrls: ['./HeaderCart.component.scss']
+  selector: 'embryo-HeaderCart',
+  templateUrl: './HeaderCart.component.html',
+  styleUrls: ['./HeaderCart.component.scss'],
 })
-export class HeaderCartComponent implements OnInit, OnChanges {
+export class HeaderCartComponent implements OnInit {
+  @Input() currency: string;
 
-   @Input() cartProducts : any;
-   @Input() count        : any;
-   @Input() currency     : string;
+  cartProducts: OrderItem[];
+  count: number;
+  mobWidth: any;
+  mobScreenSize = 767;
 
-   mobWidth : any;
-   mobScreenSize : number = 767;
+  @Output() removeProductData: EventEmitter<any> = new EventEmitter();
 
-   @Output() removeProductData : EventEmitter<any> = new EventEmitter();  
+  hiddenBadge = true;
 
-   hiddenBadge = true;
+  constructor(private productService: ProductsService) {
+    this.mobWidth = window.screen.width;
+  }
 
-   constructor() {
-      this.mobWidth = window.screen.width;
-   }
-   
-   ngOnInit() {
-   }
+  ngOnInit() {
+    this.productService.orderItems.subscribe((data) => {
+      this.cartProducts = data;
+      this.count = this.cartProducts.length;
+    });
+  }
 
-   ngOnChanges() {
-      if(this.count && this.count != 0) {
-         this.hiddenBadge = false;
-      } else {
-         this.hiddenBadge = true;
-      }
-   }
-
-   public confirmationPopup(product:any) {
-      this.removeProductData.emit(product);
-   }
-
-   public calculatePrice(product) {
-      let total = null;
-      total = product.price*product.quantity;
-      return total;
-   }
+  public confirmationPopup(orderItem: OrderItem) {
+    this.removeProductData.emit(orderItem);
+  }
 }

@@ -87,14 +87,12 @@ export class ProductsListComponent implements OnInit {
   ) {  }
 
   ngOnInit() {
-
-
     this.route.data.subscribe((data) => {
       this.products = data.products.result;
       this.pagination = data.products.pagination;
     }, error => {
       // this.toastyService.error(error);
-      console.log(error);
+      console.log('test', error);
     });
 
 

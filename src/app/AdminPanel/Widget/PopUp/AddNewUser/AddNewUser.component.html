@@ -1,0 +1,129 @@
+<mat-dialog-content class="mb-4">
+	<form [formGroup]="insertForm" (ngSubmit)="onSubmit()" fxLayout="column">
+
+		<div>
+			<h2 mat-dialog-title>Add New {{role}}</h2>
+		</div>
+
+		<div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="60" fxFlex.lg="60" fxFlex.xl="60" fxLayout="row"
+			fxLayout.xs="column" fxLayout.sm="column" fxLayoutGap="20px" fxLayoutGap.xs="0px" fxLayoutGap.sm="0px">
+
+			<mat-form-field class="w-100" fxFlex>
+				<input formControlName="FirstName" matInput type="text" placeholder="First Name" required>
+				<mat-error>Only alphabetic characters!</mat-error>
+			</mat-form-field>
+			<mat-form-field class="w-100" fxFlex>
+				<input formControlName="MiddleName" matInput type="text" placeholder="Middle Name">
+				<mat-error>Only alphabetic characters!</mat-error>
+			</mat-form-field>
+
+		</div>
+
+		<div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="60" fxFlex.lg="60" fxFlex.xl="60" fxLayout="row"
+			fxLayout.xs="column" fxLayout.sm="column" fxLayoutGap="20px" fxLayoutGap.xs="0px" fxLayoutGap.sm="0px">
+
+			<mat-form-field class="w-100" fxFlex>
+				<input formControlName="LastName" matInput type="text" placeholder="Last Name" required>
+				<mat-error>Only alphabetic characters!</mat-error>
+			</mat-form-field>
+			<mat-form-field class="w-100" fxFlex>
+				<input formControlName="Username" matInput type="text" placeholder="Username" required>
+				<mat-error>All characters allowed!</mat-error>
+			</mat-form-field>
+
+		</div>
+
+		<div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="60" fxFlex.lg="60" fxFlex.xl="60" fxLayout="row"
+			fxLayout.xs="column" fxLayout.sm="column" fxLayoutGap="20px" fxLayoutGap.xs="0px" fxLayoutGap.sm="0px">
+
+			<mat-form-field class="w-100" fxFlex>
+				<input formControlName="Email" matInput type="email" placeholder="Email" required>
+				<mat-error>Email@example.domain</mat-error>
+			</mat-form-field>
+			<mat-form-field class="w-100" fxFlex>
+				<input formControlName="PhoneNumber" matInput type="text" placeholder="Phone Number" required>
+				<mat-error>Example:+961 01234567</mat-error>
+			</mat-form-field>
+
+		</div>
+
+		<div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="60" fxFlex.lg="60" fxFlex.xl="60" fxLayout="row"
+			fxLayout.xs="column" fxLayout.sm="column" fxLayoutGap="20px" fxLayoutGap.xs="0px" fxLayoutGap.sm="0px">
+
+			<mat-form-field class="w-100" fxFlex>
+				<input formControlName="Password" matInput type="password" placeholder="Enter Password"
+					[type]="hide1 ? 'text': 'password'" required>
+				<mat-icon matSuffix (click)="hide1 = !hide1">
+					{{hide1 ? 'visibility':'visibility_off'}}</mat-icon>
+				<mat-error>Must contain at least 6 characters, including at least 1 Lower case, 1
+					Upper case, 1
+					Digits and 1 Special character</mat-error>
+			</mat-form-field>
+			<mat-form-field class="w-100" fxFlex>
+				<input formControlName="ConfirmPassword" matInput type="password" placeholder="Retype Password"
+					[type]="hide2 ? 'text': 'password'" required>
+				<mat-icon matSuffix (click)="hide2 = !hide2">
+					{{hide2 ? 'visibility':'visibility_off'}}</mat-icon>
+				<mat-error>The password and confirmation password do not match!</mat-error>
+			</mat-form-field>
+
+		</div>
+
+	</form>
+
+	<form [formGroup]="Location" (ngSubmit)="onSubmit()" fxLayout="column">
+
+		<div>
+			<h2 mat-dialog-title>Location</h2>
+		</div>
+
+		<div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="60" fxFlex.lg="60" fxFlex.xl="60" fxLayout="row"
+			fxLayout.xs="column" fxLayout.sm="column" fxLayoutGap="20px" fxLayoutGap.xs="0px" fxLayoutGap.sm="0px">
+
+			<mat-form-field class="w-100">
+				<input formControlName="Country" matInput type="text" placeholder="Country" required>
+				<mat-error>Only alphabetic characters!</mat-error>
+			</mat-form-field>
+			<mat-form-field class="w-100">
+				<input formControlName="City" matInput type="text" placeholder="City" required>
+				<mat-error>Only alphabetic characters!</mat-error>
+			</mat-form-field>
+
+		</div>
+
+		<div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="60" fxFlex.lg="60" fxFlex.xl="60" fxLayout="row"
+			fxLayout.xs="column" fxLayout.sm="column" fxLayoutGap="20px" fxLayoutGap.xs="0px" fxLayoutGap.sm="0px">
+
+			<mat-form-field class="w-100">
+				<input formControlName="Region" matInput type="text" placeholder="Region" required>
+				<mat-error>Alphanumeric characters!</mat-error>
+			</mat-form-field>
+			<mat-form-field class="w-100">
+				<input formControlName="Street" matInput type="text" placeholder="Street" required>
+				<mat-error>Alphanumeric characters!</mat-error>
+			</mat-form-field>
+
+		</div>
+
+		<div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="60" fxFlex.lg="60" fxFlex.xl="60" fxLayout="row"
+			fxLayout.xs="column" fxLayout.sm="column" fxLayoutGap="20px" fxLayoutGap.xs="0px" fxLayoutGap.sm="0px">
+
+			<mat-form-field class="w-100">
+				<input formControlName="Building" matInput type="text" placeholder="Building" required>
+				<mat-error>Alphanumeric characters!</mat-error>
+			</mat-form-field>
+			<mat-form-field class="w-100">
+				<input formControlName="Floor" matInput type="text" placeholder="Floor" required>
+				<mat-error>Alphanumeric characters!</mat-error>
+			</mat-form-field>
+
+		</div>
+
+		<mat-dialog-actions class="m-0">
+			<button type="button" mat-raised-button (click)="dialogRef.close()" color="primary">CLOSE</button>
+			<button color="warn" mat-raised-button type="submit" value="Submit"
+				[disabled]="insertForm.invalid">SUBMIT</button>
+		</mat-dialog-actions>
+	</form>
+
+</mat-dialog-content>

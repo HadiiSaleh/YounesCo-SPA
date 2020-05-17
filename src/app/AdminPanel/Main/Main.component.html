@@ -1,0 +1,16 @@
+<div [dir]="layout" id="main-app" class="app">
+	<mat-sidenav-container class="embryo-container-wrap">
+	   <mat-sidenav #sidenav [(mode)]="coreService.sidenavMode" [(opened)]="coreService.sidenavOpen" class="sidebar-area">
+	   	<app-side-bar></app-side-bar>
+	   </mat-sidenav>
+	   <app-header-component></app-header-component>
+	   <div class="embryo-base-container">
+	      <div class="embryo-container">
+	   		<router-outlet (activate)="onActivate($event)"></router-outlet>
+	   	</div>
+         <!-- embryo-container -->
+	   </div>
+	</mat-sidenav-container>
+   <!-- main-app -->
+   <ngx-toasta></ngx-toasta>
+</div>

@@ -1,0 +1,66 @@
+<div fxLayout="row wrap" fxLayoutAlign="none" class="col-gap" *ngIf="products && products.length > 0">
+  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="{{lg}}" fxFlex.xl="{{xl}}" *ngFor="let product of products; let i=index; trackBy: trackByObjectID">
+     <mat-card class="product-card" *ngIf="gridLength && (i<gridLength)">
+      <a class="p-link" [routerLink]="['/products/', product?.productId]">
+        <img width="626" height="800" mat-card-image 
+        src="{{product.imageUrl || '../../../../../../assets/images/product-fallback.jpg'}}" 
+        alt="{{product.name}}">
+      </a>
+      <div class="wishlist-icon {{i}}-wishlist" id="{{i}}-wishlist">
+         <a (click)="productAddToWishlist(product, i+'-wishlist')"><i  class="material-icons"> favorite </i></a>
+      </div>
+        <mat-card-content class="product-content relative">
+           <h5><a [routerLink]="['/products/', product?.productId]" class="title-link">{{product?.name}}</a> </h5>
+           <div>
+              <div fxFlex fxLayoutAlign="space-between">
+                 <h6 class="accent-color">{{product?.price | currency}}</h6>
+                 <div class="rating-star">
+                    <embryo-Rating rate="4"></embryo-Rating>
+                 </div>
+              </div>
+           </div>
+           <div class="m-icon" *ngIf="checkCartAlready(product)">
+              <embryo-AddToCardButton [product]="product" (addToCart)="addToCartProduct($event)"></embryo-AddToCardButton>
+           </div>
+           <div class="m-icon" *ngIf="!checkCartAlready(product)">
+               <button mat-fab [routerLink]="['/products', product?.productId]"><i class="material-icons">remove_red_eye</i> </button>
+           </div>
+           
+        </mat-card-content>
+     </mat-card>
+     <!-- Multiple show products grid -->
+     <mat-card class="product-card" *ngIf="!gridLength">
+        <a class="p-link" *ngIf="product?.productId" [routerLink]="['/products', product?.productId]">
+          <img width="626" height="800" mat-card-image 
+          src="{{product.imageUrl || '../../../../../../assets/images/product-fallback.jpg'}}" 
+          alt="{{product.name}}">
+        </a>
+        <a class="p-link" *ngIf="!product?.productId" [routerLink]="['/products/', product?.productId]">
+          <img width="626" height="800" mat-card-image  src="{{product.imageUrl || '../../../../../../assets/images/product-fallback.jpg'}}"  [ngClass]="{ transparent: !loaded }" (load)="onLoad()" alt="{{product.name}}">
+        </a>
+        <div class="wishlist-icon {{i}}-wishlist" id="{{i}}-wishlist">
+            <a (click)="productAddToWishlist(product, i+'-wishlist')"><i  class="material-icons"> favorite </i></a>
+         </div>
+        <mat-card-content class="product-content relative">
+           <h5><a *ngIf="product?.productId" [routerLink]="['/products/', product?.productId]" class="title-link">{{product?.name | truncate : 35}}</a> </h5>
+           <h5><a *ngIf="!product?.productId" [routerLink]="['/products/', product?.productId]" class="title-link">{{product?.name | truncate : 35}}</a> </h5>
+           <div>
+              <div fxFlex fxLayoutAlign="space-between">
+                 <h6 class="accent-color">{{product?.price | currency: currency}}</h6>
+                 <div class="rating-star">
+                    <embryo-Rating rate="4"></embryo-Rating>
+                 </div>
+              </div>
+           </div>
+           <div class="m-icon" *ngIf="checkCartAlready(product)">
+              <embryo-AddToCardButton [product]="product" (addToCart)="addToCartProduct($event)"></embryo-AddToCardButton>
+           </div>
+            <div class="m-icon" *ngIf="!checkCartAlready(product)">
+               <button mat-fab *ngIf="product?.productId" [routerLink]="['/products/', product?.productId]"><i class="material-icons">remove_red_eye</i> </button>
+               <button mat-fab *ngIf="!product?.productId" [routerLink]="['/products/', product?.productId]"><i class="material-icons">remove_red_eye</i> </button>
+           </div>
+          
+        </mat-card-content>
+     </mat-card>
+  </div>
+</div>

@@ -1,0 +1,110 @@
+<mat-card class="register-form form-margin" *ngIf="type == 'info' && CurrentUser">
+   
+   <div fxLayout="row wrap" class="col-gap"
+      *ngIf="((UserRole$ | async)=='Admin' || (UserRole$ | async)=='Moderator') && (LoginStatus$ | async) as LoginStatus">
+      <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+         <form [formGroup]="updateForm" (ngSubmit)="onSubmit()" fxLayout="column">
+
+            <h4>Edit Profile Information</h4>
+            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" fxLayout="row"
+               fxLayout.xs="column" fxLayout.sm="column" fxLayoutGap="20px" fxLayoutGap.xs="0px" fxLayoutGap.sm="0px">
+
+               <mat-form-field class="w-100" fxFlex>
+                  <input formControlName="FirstName" matInput type="text" placeholder="First Name" required>
+                  <mat-error>Only alphabetic characters!</mat-error>
+               </mat-form-field>
+               <mat-form-field class="w-100" fxFlex>
+                  <input formControlName="MiddleName" matInput type="text" placeholder="Middle Name">
+                  <mat-error>Only alphabetic characters!</mat-error>
+               </mat-form-field>
+
+            </div>
+
+            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" fxLayout="row"
+               fxLayout.xs="column" fxLayout.sm="column" fxLayoutGap="20px" fxLayoutGap.xs="0px" fxLayoutGap.sm="0px">
+
+               <mat-form-field class="w-100" fxFlex>
+                  <input formControlName="LastName" matInput type="text" placeholder="Last Name" required>
+                  <mat-error>Only alphabetic characters!</mat-error>
+               </mat-form-field>
+               <mat-form-field class="w-100" fxFlex>
+                  <input formControlName="Username" matInput type="text" placeholder="Username" required>
+                  <mat-error>All characters allowed!</mat-error>
+               </mat-form-field>
+
+            </div>
+
+            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" fxLayout="row"
+               fxLayout.xs="column" fxLayout.sm="column" fxLayoutGap="20px" fxLayoutGap.xs="0px" fxLayoutGap.sm="0px">
+
+               <mat-form-field class="w-100" fxFlex>
+                  <input formControlName="Email" matInput type="email" placeholder="Email" required>
+                  <mat-error>Email@example.domain</mat-error>
+               </mat-form-field>
+               <mat-form-field class="w-100" fxFlex>
+                  <input formControlName="PhoneNumber" matInput type="text" placeholder="Phone Number" required>
+                  <mat-error>Example:+961 01234567</mat-error>
+               </mat-form-field>
+
+            </div>
+
+         </form>
+         <br>
+         <form [formGroup]="Location" (ngSubmit)="onSubmit()" fxLayout="column">
+            <h4>Edit Location</h4>
+
+            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" fxLayout="row"
+               fxLayout.xs="column" fxLayout.sm="column" fxLayoutGap="20px" fxLayoutGap.xs="0px" fxLayoutGap.sm="0px">
+
+               <mat-form-field class="w-100">
+                  <input formControlName="Country" matInput type="text" placeholder="Country" required>
+                  <mat-error>Only alphabetic characters!</mat-error>
+               </mat-form-field>
+               <mat-form-field class="w-100">
+                  <input formControlName="City" matInput type="text" placeholder="City" required>
+                  <mat-error>Only alphabetic characters!</mat-error>
+               </mat-form-field>
+
+            </div>
+
+            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" fxLayout="row"
+               fxLayout.xs="column" fxLayout.sm="column" fxLayoutGap="20px" fxLayoutGap.xs="0px" fxLayoutGap.sm="0px">
+
+               <mat-form-field class="w-100">
+                  <input formControlName="Region" matInput type="text" placeholder="Region" required>
+                  <mat-error>Alphanumeric characters!</mat-error>
+               </mat-form-field>
+               <mat-form-field class="w-100">
+                  <input formControlName="Street" matInput type="text" placeholder="Street" required>
+                  <mat-error>Alphanumeric characters!</mat-error>
+               </mat-form-field>
+
+            </div>
+
+            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" fxLayout="row"
+               fxLayout.xs="column" fxLayout.sm="column" fxLayoutGap="20px" fxLayoutGap.xs="0px" fxLayoutGap.sm="0px">
+
+               <mat-form-field class="w-100">
+                  <input formControlName="Building" matInput type="text" placeholder="Building" rror>
+               </mat-form-field>
+               <mat-form-field class="w-100">
+                  <input formControlName="Floor" matInput type="text" placeholder="Floor" required>
+                  <mat-error>Alphanumeric characters!</mat-error>
+               </mat-form-field>
+
+            </div>
+
+            <br>
+
+            <div fxLayoutAlign="center center">
+               <button color="accent" class="button-lg mb-3" mat-raised-button type="submit" value="Submit"
+                  [disabled]="updateForm.invalid || !updateForm.dirty">Save</button>
+            </div>
+
+         </form>
+      </div>
+      <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="edit-profile"
+         style="background-image: url(assets/images/administrator.png)">
+      </div>
+   </div>
+</mat-card>

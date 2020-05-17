@@ -1,0 +1,119 @@
+<ng-container *ngIf="pageTitle">
+  <embryo-PageTitle
+    heading="{{ pageTitle }}"
+    subHeading="{{ subPageTitle }}"
+  ></embryo-PageTitle>
+  <div class="inner-container section-gap">
+    <div class="container">
+      <div fxLayout="row wrap" class="col-gap">
+        <div
+          fxFlex.xs="100"
+          fxFlex.sm="100"
+          fxFlex.md="35"
+          fxFlex.lg="25"
+          fxFlex.xl="25"
+        >
+          <div class="mat-card mb-4">
+            <mat-form-field style="width: 100%;">
+              <mat-label>Search a product</mat-label>
+              <input matInput (keyup)="onSearchChange($event.target.value)"/>
+            </mat-form-field>
+          </div>
+
+          <div class="mat-card mb-4" *ngIf="categories.length > 0 && categories !== null">
+            <h5>Categories</h5>
+            <mat-selection-list #categoriesList (selectionChange)="onCategoriesChange(categoriesList.selectedOptions.selected)">
+              <mat-list-option *ngFor="let category of categories" [value]="category">{{
+                category.categoryName | titlecase
+              }}</mat-list-option>
+          </mat-selection-list>
+          </div>
+          <div class="mat-card mb-4" *ngIf="colors.length > 0 && colors !== null">
+            <h5>Colors</h5>
+            <mat-selection-list #colorsList (selectionChange)="onColorChange(colorsList.selectedOptions.selected)">
+                <mat-list-option *ngFor="let color of colors" [value]="color">{{
+                  color.colorName | titlecase
+                }}</mat-list-option>
+            </mat-selection-list>
+          </div>
+          <div class="mat-card mb-4">
+            <h5>Prices</h5>
+            <nouislider
+            (change) = "onPricesChange($event)"
+              [config]="config"
+              [min]="2"
+              [max]="500"
+              [step]="0.05"
+              [tooltips]="[true, true]"
+              style="margin: inherit;"
+            ></nouislider>
+          </div>
+          <!-- <div class="mat-card mb-4">
+            <h5>CUSTOMER RATINGS</h5>
+          </div> -->
+          <!-- <div class="mat-card mb-4">
+            <button mat-flat-button color="accent" (click)="resetFiltration()">Clear all filters</button>
+          </div> -->
+        </div>
+        <div
+          fxFlex.xs="100"
+          fxFlex.sm="100"
+          fxFlex.md="100"
+          fxFlex.lg="75"
+          fxFlex.xl="75"
+          class="algolia-main-list"
+        >
+          <mat-form-field style="margin-right: 20px;">
+            <mat-label>Featured</mat-label>
+            <mat-select (selectionChange)="orderByPrice($event)">
+              <mat-option>None</mat-option>
+              <mat-option value="asc">
+                Price asc.
+              </mat-option>
+              <mat-option value="desc">
+                Price desc.
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Per Page</mat-label>
+            <mat-select value="12" (selectionChange)="itemsPerPage($event)">
+              <mat-option value="3">
+                3 per page
+              </mat-option>
+              <mat-option value="6">
+                6 per page
+              </mat-option>
+              <mat-option value="12">
+                12 per page
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <ng-container
+            *ngIf="products && products.length > 0; else errorBlock"
+          >
+            <embryo-ProductGrid
+              [currency]="embryoService?.currency"
+              [products]="products"
+              (addToCart)="addToCart($event)"
+              (addToWishList)="addToWishList($event)"
+              gridThree="true"
+            >
+            </embryo-ProductGrid>
+          </ng-container>
+          <ng-template #errorBlock>
+            <p>No Products Found.</p>
+          </ng-template>
+          <ngx-paginate
+          *ngIf="products && products.length > 0"
+          [page]="pagination"
+          [options]="paginatorOptions"
+          (pageChange)='pageChanged($event)'>
+        </ngx-paginate>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

@@ -1,0 +1,19 @@
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+// .product-detail-price h4 input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+//     color: #ff5722;
+//     opacity: 1; /* Firefox */
+//   }
+
+.text-medium {
+  font-size: 0.875rem;
+}

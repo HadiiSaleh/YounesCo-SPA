@@ -45,7 +45,6 @@ export class HeaderTwoComponent implements OnInit {
     value: any,
     type: 'cart' | 'wishlist'
   ) {
-
     let toastOption: ToastOptions = {
       title: 'Remove Product From Cart',
       msg: 'Product removing from cart',

@@ -26,9 +26,9 @@ export class CartComponent implements OnInit, AfterViewChecked {
   ) {}
 
   ngOnInit() {
-     this.productService.orderItems.subscribe(data => {
-        this.orderItems = data;
-     });
+    this.productService.orderItems.subscribe((data) => {
+      this.orderItems = data;
+    });
   }
 
   ngAfterViewChecked(): void {
@@ -61,10 +61,7 @@ export class CartComponent implements OnInit, AfterViewChecked {
 
   public calculateTotalPrice() {
     let subtotal = 0;
-    if (
-      this.orderItems &&
-      this.orderItems.length > 0
-    ) {
+    if (this.orderItems && this.orderItems.length > 0) {
       for (let orderItem of this.orderItems) {
         subtotal += orderItem.unitPrice * orderItem.quantity;
       }
@@ -75,10 +72,7 @@ export class CartComponent implements OnInit, AfterViewChecked {
 
   public getTotalPrice() {
     let total = 0;
-    if (
-      this.orderItems &&
-      this.orderItems.length > 0
-    ) {
+    if (this.orderItems && this.orderItems.length > 0) {
       for (let orderItem of this.orderItems) {
         total += orderItem.unitPrice * orderItem.quantity;
       }
